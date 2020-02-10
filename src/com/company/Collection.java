@@ -1,5 +1,5 @@
 package com.company;
-
+import java.util.Collections;
 
 
 import java.util.Scanner;
@@ -61,8 +61,9 @@ public class Collection {
 
         Scanner scanner = new Scanner(System.in);
         int number = scanner.nextInt();
-        for (HumanBeing i:humanBeing){
-            if ((int) humanBeing.get(i).getId()== number){
+        //for (HumanBeing i:humanBeing){
+        for (int i = 0; i <humanBeing.size() ; i++){
+            if (humanBeing.get(i).getId()== number){
 
                 humanBeing.remove(i);
 
@@ -108,22 +109,46 @@ public class Collection {
 }
 
     public void reorder() {
-
+        int k=humanBeing.size();
+        int n = (int)(humanBeing.size() /2) ;
+        for (int i = 0; i <n ; i++) {
+            HumanBeing newHuman = humanBeing.get(i);
+            humanBeing.insertElementAt(humanBeing.get(k-i+1), i);
+            humanBeing.insertElementAt(newHuman, k-i+1);
+        }
     }
 
     public void sort() {
-// Collections.sort(humanBeing);
+
+        Comparator<HumanBeing> comparator = Comparator.comparing(obj -> obj.getName());
+        Collections.sort(humanBeing, comparator);
+
+
     }
 
     public void sumOfImpactSpeed() {
-
+    long k=0;
+        for (int i = 0; i <humanBeing.size() ; i++) {
+           k+= humanBeing.get(i).getImpactSpeed();
+        }
+        System.out.println("Сумма значений полей = " +k );
     }
 
     public void filterStartsWithName() {
+        Scanner scanner = new Scanner(System.in);
+        String name1 = scanner.nextLine();
+        //for (HumanBeing i: humanBeing){
+        for (int i = 0; i <humanBeing.size() ; i++) {
+            if (humanBeing.get(i).getName().equals(name1)){
+                humanBeing.remove(i);
+
+            }
+        }
 
     }
 
     public void printFieldDescendingWeaponType() {
+
     }
 
 }
