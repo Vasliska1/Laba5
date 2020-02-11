@@ -92,18 +92,18 @@ public class Collection {
     }
 
     public void removeLower(HumanBeing human) {
-        Iterator<HumanBeing> iterator = humanBeing.iterator();
-        Comparator comparator = humanBeing.comparator();
+        /*Iterator<HumanBeing> iterator = humanBeing.iterator();
+        //Comparator comparator = humanBeing.comparator();
         int count = 0;
         while (iterator.hasNext()) {
             HumanBeing anotherHuman = iterator.next();
-            if (comparator.compare(human, anotherHuman) > 0) {
+          //  if (comparator.compare(human, anotherHuman) > 0) {
                 iterator.remove();
                 count++;
             }
-        }
+        }*/
 
-    }
+
 
 
 }

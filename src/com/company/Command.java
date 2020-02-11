@@ -49,7 +49,7 @@ public class Command {
                             collection.executeScript();
                             break;
                         case "remove_lower":
-                            collection.removeLower();
+                            //collection.removeLower();
                             break;
                         case "reorder":
                             collection.reorder();
