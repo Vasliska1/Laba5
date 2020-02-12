@@ -12,11 +12,11 @@ import java.util.Date;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement
 @XmlType(name = "cat")
-
 public class HumanBeing  {
     private Integer id; //Поле не может быть null, Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
     private String name; //Поле не может быть null, Строка не может быть пустой
     private Coordinates coordinates; //Поле не может быть null
+    @XmlJavaTypeAdapter(value =  LocalDate1.class)
     private java.time.LocalDate creationDate; //Поле не может быть null, Значение этого поля должно генерироваться автоматически
     private Boolean realHero; //Поле не может быть null
     private boolean hasToothpick;
@@ -143,4 +143,17 @@ enum Mood {
     APATHY,
     CALM,
     FRENZY;
+}
+
+class LocalDate1 extends  XmlAdapter<String, LocalDate>{
+
+    @Override
+    public LocalDate unmarshal(String v) throws Exception {
+        return LocalDate.parse(v);
+    }
+
+    @Override
+    public String marshal(LocalDate v) throws Exception {
+        return v.toString();
+    }
 }
