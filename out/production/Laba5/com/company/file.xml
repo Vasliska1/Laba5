@@ -1,0 +1,36 @@
+<begin>
+    <HumanBeings>
+        <humanBeing>
+            <id>7</id>
+            <name>z</name>
+            <coordinates>
+                <x>5</x>
+                <y>6.0</y>
+            </coordinates>
+            <realHero>true</realHero>
+            <hasToothpick>true</hasToothpick>
+            <impactSpeed>5</impactSpeed>
+            <weaponType>HAMMER</weaponType>
+            <mood>SADNESS</mood>
+            <car>
+                <name>x</name>
+            </car>
+        </humanBeing>
+        <humanBeing>
+            <id>9</id>
+            <name>z</name>
+            <coordinates>
+                <x>5</x>
+                <y>6.0</y>
+            </coordinates>
+            <realHero>true</realHero>
+            <hasToothpick>true</hasToothpick>
+            <impactSpeed>5</impactSpeed>
+            <weaponType>HAMMER</weaponType>
+            <mood>SADNESS</mood>
+            <car>
+                <name>x</name>
+            </car>
+        </humanBeing>
+    </HumanBeings>
+</begin>

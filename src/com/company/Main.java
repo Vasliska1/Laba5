@@ -72,5 +72,6 @@ String xmldata="<humanBeing>\n" +
         Vector<HumanBeing> human2 = (Vector<HumanBeing>) unmarshaller.unmarshal(reader);
         System.out.println(human2.toString());
 //}
+        //dfdfdd
     }
 }
