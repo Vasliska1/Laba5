@@ -123,7 +123,7 @@ public class Collection {
         Comparator<HumanBeing> comparator = Comparator.comparing(obj -> obj.getName());
         Collections.sort(humanBeing, comparator);
 
-
+        //humanBeing.sort((o1, o2) -> o1.getName().compareTo(o2.getName()));
     }
 
     public void sumOfImpactSpeed() {

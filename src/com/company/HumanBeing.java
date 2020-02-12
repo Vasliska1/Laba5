@@ -6,6 +6,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -23,8 +24,7 @@ public class HumanBeing  {
     private WeaponType weaponType; //Поле может быть null
     private Mood mood; //Поле может быть null
     private Car car; //Поле может быть null
-
-    public LocalDate getLocalDate() {
+public LocalDate getLocalDate() {
         return creationDate;
     }
     public void setLocalDate(LocalDate localDate) {
@@ -82,8 +82,9 @@ public class HumanBeing  {
     }
 
 }
-
+@XmlAccessorType(XmlAccessType.FIELD)
 class Coordinates {
+
     private Long x; //Значение поля должно быть больше -671, Поле не может быть null
 
     private Float y; //Максимальное значение поля: 649, Поле не может быть null
@@ -93,11 +94,11 @@ class Coordinates {
         this.y = y;
     }
     Coordinates(){}
-    @XmlElement(name = "x")
+
     public Long getX() {
         return x;
     }
-    @XmlElement(name = "y")
+
     public Float getY() {
         return y;
     }
@@ -109,7 +110,7 @@ class Coordinates {
 
 
 }
-
+@XmlAccessorType(XmlAccessType.FIELD)
 class Car {
     Car(){}
     private String name; //Поле может быть null
@@ -124,7 +125,7 @@ class Car {
     public Car(String name) {
         this.name = name;
     }
-    @XmlElement(name = "name")
+
     public String getName() {
         return name;
     }
@@ -143,4 +144,3 @@ enum Mood {
     CALM,
     FRENZY;
 }
-
