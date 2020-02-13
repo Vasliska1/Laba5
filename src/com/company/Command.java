@@ -5,12 +5,12 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class Command {
-    private Collection collection;
     private String inputCommand = "";
     private String[] rightCommand;
 
 
-    public void App() throws IOException {
+    public void App(HumanBeingCollection collection) throws IOException {
+        System.out.println("Здравствуйте! Введите help для просмотра возможных команд");
         try (Scanner read = new Scanner(System.in)) {
             if (inputCommand.equals("exit")) {
                 collection.exit();
@@ -37,7 +37,7 @@ public class Command {
 
                             break;
                         case "remove_by_id":
-                            collection.removeById();
+                            collection.removeById(rightCommand[1]);
                             break;
                         case "clear":
                             collection.clear();
@@ -46,7 +46,7 @@ public class Command {
                             collection.save();
                             break;
                         case "execute_script":
-                            collection.executeScript();
+                            //collection.executeScript();
                             break;
                         case "remove_lower":
                             //collection.removeLower();
@@ -75,5 +75,10 @@ public class Command {
             }
         }
     }
+    public String getRightCommand(){
+        return rightCommand[1];
+    }
+
+
 }
 
