@@ -3,13 +3,11 @@ package com.company;
 import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
 import java.time.LocalDate;
-
 
 @XmlRootElement(name = "humanbeing")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class HumanBeing {
+public class HumanBeing implements Comparable<HumanBeing> {
     private Integer id; //Поле не может быть null, Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
     private String name; //Поле не может быть null, Строка не может быть пустой
     private Coordinates coordinates; //Поле не может быть null
@@ -44,7 +42,7 @@ public class HumanBeing {
 
     public HumanBeing(String name, Coordinates coordinates,
                       Boolean realHero, boolean hasToothpick, Long impactSpeed, WeaponType weaponType, Mood mood, Car car) {
-        this.id = (int) (Math.random() * 100);
+        this.id = (int) (Math.random() * 1000);
         this.name = name;
         this.coordinates = coordinates;
         this.creationDate = LocalDate.now();
@@ -72,6 +70,16 @@ public class HumanBeing {
                 '}';
     }
 
+    @Override
+    public int compareTo(HumanBeing anotherHuman) {
+        if (this.impactSpeed == anotherHuman.impactSpeed) {
+            return 0;
+        } else if (this.impactSpeed > anotherHuman.impactSpeed) {
+            return 1;
+        } else {
+            return -1;
+        }
+    }
 }
 
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -127,14 +135,18 @@ class Car {
     }
 }
 
-enum WeaponType {
-    HAMMER,
-    RIFLE,
-    MACHINE_GUN,
-    BAT;
+enum WeaponType implements Comparable<WeaponType> {
+    HAMMER(2),
+    RIFLE(4),
+    MACHINE_GUN(3),
+    BAT(1);
+    public int power;
 
-
+    WeaponType(int power) {
+        this.power = power;
+    }
 }
+
 
 enum Mood {
     SADNESS,
