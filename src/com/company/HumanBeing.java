@@ -132,6 +132,8 @@ enum WeaponType {
     RIFLE,
     MACHINE_GUN,
     BAT;
+
+
 }
 
 enum Mood {

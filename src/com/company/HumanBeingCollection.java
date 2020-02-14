@@ -1,11 +1,8 @@
 package com.company;
 import java.io.*;
 import java.util.Collections;
-
-
 import java.util.Scanner;
 import java.util.*;
-
 import javax.xml.bind.annotation.*;
 import java.util.*;
 
@@ -16,23 +13,22 @@ public class HumanBeingCollection{
     private Vector<HumanBeing> humanBeing;
     private Date date;
 
-    public Vector<HumanBeing> getHumanBeings() {
-
+        public Vector<HumanBeing> getHumanBeings() {
         return humanBeing;
     }
 
     public void setHumanBeing(Vector<HumanBeing> humanBeing) {
-
         this.humanBeing = humanBeing;
     }
 
     public HumanBeingCollection(Vector<HumanBeing> humanBeing) {
         this.humanBeing = humanBeing;
-    }
-
-    public HumanBeingCollection() {
+        this.date=new Date();
 
     }
+
+    public HumanBeingCollection(){}
+
     public Vector<HumanBeing> getCollection(){
         return this.humanBeing;
     }
@@ -157,15 +153,13 @@ public class HumanBeingCollection{
 
     }
 
-    public void removeById(String ID) {
+    public void removeById(Integer ID) {
 
 
 
-        Scanner scanner = new Scanner(System.in);
-        int number = scanner.nextInt();
         //for (HumanBeing i:humanBeing){
         for (int i = 0; i <humanBeing.size() ; i++){
-            if (humanBeing.get(i).getId()== number){
+            if (humanBeing.get(i).getId()== ID){
 
                 humanBeing.remove(i);
 
@@ -192,20 +186,23 @@ public class HumanBeingCollection{
 
 
     public void executeScript(String fileName) {
-      /*  try {
-            String commandsStr = this.().getStrFromFile(fileName);
+     /* try {
+            String commandsStr = this. ().getStrFromFile(fileName);
             String[] commands = commandsStr.trim().split("\n");
             for (String command : commands) {
+                Command c= new Command();
+
                 System.out.println();
-                this.App();
+                c.App();
             }
         } catch (Exception ex) {
-            System.out.println(ex.getMessage());
-        }*/
+          System.out.println(ex.getMessage());
+      }*/
 
     }
 
     public void exit() {
+
 
     }
 
@@ -259,10 +256,10 @@ public class HumanBeingCollection{
 
     public void sort() {
 
-        Comparator<HumanBeing> comparator = Comparator.comparing(obj -> obj.getName());
-        Collections.sort(humanBeing, comparator);
+        //Comparator<HumanBeing> comparator = Comparator.comparing(obj -> obj.getName());
+        //Collections.sort(humanBeing, comparator);
 
-        //humanBeing.sort((o1, o2) -> o1.getName().compareTo(o2.getName()));
+        humanBeing.sort((o1, o2) -> o1.getName().compareTo(o2.getName()));
     }
 
     public void sumOfImpactSpeed() {

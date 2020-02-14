@@ -24,12 +24,13 @@ public class Main {
 
         HumanBeing h1 = new HumanBeing("z", new Coordinates(new Long(5), new Float(6)), true, true,
                 new Long(5), WeaponType.HAMMER, Mood.SADNESS, new Car("x"));
-        HumanBeing h2 = new HumanBeing("z", new Coordinates(new Long(5), new Float(6)), true, true,
+        HumanBeing h2 = new HumanBeing("a", new Coordinates(new Long(5), new Float(6)), true, true,
                 new Long(5), WeaponType.HAMMER, Mood.SADNESS, new Car("x"));
 
         HumanBeingCollection humansBeingCollection = new HumanBeingCollection(new Vector<>());
         humansBeingCollection.getHumanBeings().add(h1);
         humansBeingCollection.getHumanBeings().add(h2);
+
 
         StringWriter writer = new StringWriter();
         JAXBContext context1 = JAXBContext.newInstance(HumanBeingCollection.class);
@@ -46,8 +47,11 @@ public class Main {
 
         Command c = new Command();
         c.App(humansBeingCollection);
+        for (HumanBeing hb : hbs.getHumanBeings())
+            System.out.println(hb.toString());
 
 //scanner.close();
     }
+
 
 }
