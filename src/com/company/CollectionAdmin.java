@@ -256,9 +256,17 @@ catch (Exception ex) {
         while (in.hasNext())
             script.add(in.nextLine().toLowerCase());
         System.out.println(script);
+        ArrayList<Integer> index = new ArrayList<>();
+        for (int i = 0; i <script.size() ; i++) {
+            if(script.get(i).startsWith("add")){
+                index.add(i);
+            }
+        }
         for (String c : script) {
             this.doCommand(c);
         }
+        
+
     }
 
 
