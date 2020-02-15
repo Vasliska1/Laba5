@@ -13,7 +13,7 @@ public class App {
     }
 
     public void begin() {
-        System.out.println("Здравствуйте! Введите help для просмотра возможных команд");
+        System.out.println("Здрарова! Введите help для просмотра возможных команд");
         try (Scanner command = new Scanner(System.in)) {
             while (!fullInputCommand.equals("exit")) {
                 fullInputCommand = command.nextLine();

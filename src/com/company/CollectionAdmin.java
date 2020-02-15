@@ -7,7 +7,7 @@ public class CollectionAdmin {
     private HumanBeingCollection humanBeing;
     private String inputCommand = "";
     private String[] rightCommand;
-    public static final String file = "C:\\Users\\Владислава\\IdeaProjects\\lab5.1\\src\\dat.xml";
+    public static final String file = "C:\\Users\\Vasilisa\\Laba5\\out\\production\\Laba5\\com\\company\\file.xml";
 
     public CollectionAdmin(HumanBeingCollection humanBeing) {
         this.humanBeing = humanBeing;
@@ -69,10 +69,10 @@ public class CollectionAdmin {
                 default:
                     System.out.println("Такой команды нет.");
             }
-        } catch (ArrayIndexOutOfBoundsException ex) {
-            System.out.println("Введите аргумент.");
+        } catch (Exception ex) {
+            System.out.println("Ошибочка, дружочек.");
         }
-        //}
+
     }
 
     public void help() {
@@ -107,90 +107,94 @@ public class CollectionAdmin {
     }
 
     public void add() {
-        Boolean realHero;
-        Boolean hasToothpick;
-        WeaponType weapon = null;
-        Mood mood = null;
-        System.out.println("Введите имя:");
-        Scanner sc = new Scanner(System.in);
-        String name = sc.nextLine().trim();
-        System.out.println("Введите координаты, x:");
-        Scanner sc1 = new Scanner(System.in);
-        Long x = sc1.nextLong();
-        System.out.println("y:");
-        Scanner sc2 = new Scanner(System.in);
-        Float y = sc2.nextFloat();
-        System.out.println("Человек реальный герой? Введите yes/no");
-        Scanner sc3 = new Scanner(System.in);
-        String answer = sc3.nextLine().toLowerCase().trim();
-        if (answer.equals("yes")) {
-            realHero = true;
-        } else if (answer.equals("no")) {
-            realHero = false;
-        } else {
-            realHero = null;
-            System.out.println("Не понимаю");
-        }
-        System.out.println("У человека есть зубочистка? Введите yes/no");
-        Scanner sc4 = new Scanner(System.in);
-        String answer1 = sc4.nextLine().toLowerCase().trim();
-        if (answer1.equals("yes")) {
-            hasToothpick = true;
-        } else if (answer1.equals("no")) hasToothpick = false;
-        else {
-            hasToothpick = null;
-            System.out.println("Не понимаю");
-        }
-        System.out.println("Введите скорость удара:");
-        Scanner sc5 = new Scanner(System.in);
-        Long speed = sc5.nextLong();
-        System.out.println("Выберите и введите оружие: HAMMER, RIFLE, MACHINE GUN, BAT");
-        Scanner sc6 = new Scanner(System.in);
-        String answer2 = sc6.nextLine().toLowerCase().trim();
-        switch (answer2) {
-            case "hammer":
-                weapon = WeaponType.HAMMER;
-                break;
-            case "rifle":
-                weapon = WeaponType.RIFLE;
-                break;
-            case "machine gun":
-                weapon = WeaponType.MACHINE_GUN;
-                break;
-            case "Bat":
-                weapon = WeaponType.BAT;
-                break;
-            default:
-                System.out.println("Такого варианта нет");
-                break;
-        }
-        System.out.println("Выберите и введите настроение: SADNESS, APATHY, CALM, FRENZY");
-        Scanner sc7 = new Scanner(System.in);
-        String answer3 = sc7.nextLine().toLowerCase().trim();
-        switch (answer3) {
-            case "sadness":
-                mood = Mood.SADNESS;
-                break;
-            case "apathy":
-                mood = Mood.APATHY;
-                break;
-            case "calm":
-                mood = Mood.CALM;
-                break;
-            case "frenzy":
-                mood = Mood.FRENZY;
-                break;
-            default:
-                System.out.println("Такого варианта нет");
-                break;
-        }
-        System.out.println("Введите название машины:");
-        Scanner sc8 = new Scanner(System.in);
-        String nameOfCar = sc8.nextLine().trim();
+        try {
+            Boolean realHero;
+            Boolean hasToothpick;
+            WeaponType weapon = null;
+            Mood mood = null;
+            System.out.println("Введите имя:");
+            Scanner sc = new Scanner(System.in);
+            String name = sc.nextLine().trim();
+            System.out.println("Введите координаты, x:");
+            Scanner sc1 = new Scanner(System.in);
+            Long x = sc1.nextLong();
+            System.out.println("y:");
+            Scanner sc2 = new Scanner(System.in);
+            Float y = sc2.nextFloat();
+            System.out.println("Человек реальный герой? Введите yes/no");
+            Scanner sc3 = new Scanner(System.in);
+            String answer = sc3.nextLine().toLowerCase().trim();
+            if (answer.equals("yes")) {
+                realHero = true;
+            } else if (answer.equals("no")) {
+                realHero = false;
+            } else {
+                realHero = null;
+                System.out.println("Не понимаю");
+            }
+            System.out.println("У человека есть зубочистка? Введите yes/no");
+            Scanner sc4 = new Scanner(System.in);
+            String answer1 = sc4.nextLine().toLowerCase().trim();
+            if (answer1.equals("yes")) {
+                hasToothpick = true;
+            } else if (answer1.equals("no")) hasToothpick = false;
+            else {
+                hasToothpick = null;
+                System.out.println("Не понимаю");
+            }
+            System.out.println("Введите скорость удара:");
+            Scanner sc5 = new Scanner(System.in);
+            Long speed = sc5.nextLong();
+            System.out.println("Выберите и введите оружие: HAMMER, RIFLE, MACHINE GUN, BAT");
+            Scanner sc6 = new Scanner(System.in);
+            String answer2 = sc6.nextLine().toLowerCase().trim();
+            switch (answer2) {
+                case "hammer":
+                    weapon = WeaponType.HAMMER;
+                    break;
+                case "rifle":
+                    weapon = WeaponType.RIFLE;
+                    break;
+                case "machine gun":
+                    weapon = WeaponType.MACHINE_GUN;
+                    break;
+                case "Bat":
+                    weapon = WeaponType.BAT;
+                    break;
+                default:
+                    System.out.println("Такого варианта нет");
+                    break;
+            }
+            System.out.println("Выберите и введите настроение: SADNESS, APATHY, CALM, FRENZY");
+            Scanner sc7 = new Scanner(System.in);
+            String answer3 = sc7.nextLine().toLowerCase().trim();
+            switch (answer3) {
+                case "sadness":
+                    mood = Mood.SADNESS;
+                    break;
+                case "apathy":
+                    mood = Mood.APATHY;
+                    break;
+                case "calm":
+                    mood = Mood.CALM;
+                    break;
+                case "frenzy":
+                    mood = Mood.FRENZY;
+                    break;
+                default:
+                    System.out.println("Такого варианта нет");
+                    break;
+            }
+            System.out.println("Введите название машины:");
+            Scanner sc8 = new Scanner(System.in);
+            String nameOfCar = sc8.nextLine().trim();
 
-        HumanBeing h3 = new HumanBeing(name, new Coordinates(x, y), realHero,
-                hasToothpick, speed, weapon, mood, new Car(nameOfCar));
-        humanBeing.getHumanBeings().add(h3);
+            HumanBeing h3 = new HumanBeing(name, new Coordinates(x, y), realHero,
+                    hasToothpick, speed, weapon, mood, new Car(nameOfCar));
+            humanBeing.getHumanBeings().add(h3);
+        } catch (InputMismatchException e) {
+            System.out.println("Чувак, попробуй еще раз");
+        }
     }
 
     public void update(Integer id) {
@@ -209,13 +213,25 @@ public class CollectionAdmin {
     }
 
     public void removeById(int id) {
+        try {
+            int sizeStart= this.humanBeing.getHumanBeings().size();
 
-        for (int i = 0; i < humanBeing.getHumanBeings().size(); i++) {
-            if (humanBeing.getHumanBeings().get(i).getId() == id) {
-                humanBeing.getHumanBeings().remove(i);
+            for (int i = 0; i < humanBeing.getHumanBeings().size(); i++) {
+                if (humanBeing.getHumanBeings().get(i).getId() == id) {
+                    humanBeing.getHumanBeings().remove(i);
+                }
             }
+            int sizeFinish = this.humanBeing.getHumanBeings().size();
+            if (sizeFinish<sizeFinish){
+                System.out.println("Элемент коллекции удалён.");
+            }
+            else
+                 throw  new Exception("Такой элементик не найден");
+
         }
-        System.out.println("Элемент коллекции удалён.");
+catch (Exception ex) {
+    System.out.println(ex.getMessage());
+        }
 
     }
 
@@ -234,7 +250,7 @@ public class CollectionAdmin {
     }*/
 
     public void executeScript(String fileName) throws IOException {
-        String file = "C:\\Users\\Владислава\\IdeaProjects\\lab5.1\\src\\" + fileName;
+        String file = "C:\\Users\\Vasilisa\\Laba5\\out\\production\\Laba5\\com\\company\\" + fileName;
         Scanner in = new Scanner(new File(file));
         ArrayList<String> script = new ArrayList<>();
         while (in.hasNext())
@@ -290,11 +306,22 @@ public class CollectionAdmin {
     }
 
     public void filterStartsWithName(String name1) {
+        try{
+            int k = 0;
         for (int i = 0; i < humanBeing.getHumanBeings().size(); i++) {
             if (humanBeing.getHumanBeings().get(i).getName().startsWith(name1)) {
                 System.out.println(humanBeing.getHumanBeings().get(i).toString());
+                k++;
             }
+            if (k == 0){
+                throw new Exception("Сори, ты ошибся, такого начала у имен нет");
+            }
+
+        }}
+        catch (Exception ex) {
+            System.out.println(ex.getMessage());
         }
+
 
     }
 
