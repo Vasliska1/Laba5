@@ -18,8 +18,7 @@ public class CollectionAdmin {
     }
 
     public void doCommand(IOInterface inputCommand) throws IOException {
-        rightCommand = inputCommand.getCurrentInput().trim().split(" ", 2);
-        //  rightCommand = inputCommand.toLowerCase().trim().split(" ", 2);
+        rightCommand = inputCommand.getCurrentInput().toLowerCase().trim().split(" ", 2);
         try {
             switch (rightCommand[0]) {
                 case "":
@@ -35,7 +34,6 @@ public class CollectionAdmin {
                     break;
                 case "add":
                     this.add(inputCommand);
-
                     break;
                 case "update":
                     this.update(Integer.parseInt(rightCommand[1]), inputCommand);
@@ -48,7 +46,6 @@ public class CollectionAdmin {
                     } catch (Exception e) {
                         System.out.println("Такой элементик не найден");
                     }
-                    ;
                     break;
                 case "clear":
                     this.clear();
@@ -66,8 +63,8 @@ public class CollectionAdmin {
                 case "execute_script":
                     try {
                         this.executeScript(rightCommand[1]);
-                    } catch (IOException e) {
-                        e.getMessage();
+                    }catch (FileNotFoundException e){
+                        System.out.println("Полный взлом жЁпы, чувак, файл не найден))");
                     }
                     break;
                 case "remove_lower":
@@ -171,7 +168,6 @@ public class CollectionAdmin {
         }
         if (speed < -614) {
             throw new InncorrectValue("Поле должно быть больше -614");
-
         }
         command.output("Выберите и введите оружие: HAMMER, RIFLE, MACHINE GUN, BAT");
         String answer2 = command.getNextInput().trim();
@@ -218,15 +214,15 @@ public class CollectionAdmin {
         if (nameOfCar.equals("")) {
             throw new NullPointerException();
         }
-
         h = new HumanBeing(name, new Coordinates(x, y), realHero,
                 hasToothpick, speed, weapon, mood, new Car(nameOfCar));
-
-
         } catch (InputMismatchException e) {
             System.out.println("Надо вводить число");
         } catch (NullPointerException e) {
             System.out.println("Поле не может быть пустым");
+        }
+        catch (InncorrectValue e){
+            System.out.println("Попробуйте еще раз");
         }
 
             return h;
@@ -252,7 +248,7 @@ public class CollectionAdmin {
 
     }
 
-    public void removeById(int id) throws Exception {
+    public void removeById(int id){
 
         for (int i = 0; i < humanBeing.getHumanBeings().size(); i++) {
             if (humanBeing.getHumanBeings().get(i).getId() == id) {
@@ -333,8 +329,8 @@ public class CollectionAdmin {
         System.out.println("Сумма значений полей impactSpeed = " + k);
     }
 
-    public void filterStartsWithName(String name1) {
-        try {
+    public void filterStartsWithName(String name1) throws Exception {
+
             int k = 0;
             for (int i = 0; i < humanBeing.getHumanBeings().size(); i++) {
                 if (humanBeing.getHumanBeings().get(i).getName().startsWith(name1)) {
@@ -346,11 +342,6 @@ public class CollectionAdmin {
                 }
 
             }
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage());
-        }
-
-
     }
 
     public void printFieldDescendingWeaponType() {

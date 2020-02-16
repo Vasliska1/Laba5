@@ -7,9 +7,14 @@ import java.util.Scanner;
 
 public class FileInput implements IOInterface{
 public FileInput(String fileName) throws FileNotFoundException {
-    String file = "C:\\Users\\Vasilisa\\Laba5\\out\\production\\Laba5\\com\\company\\" + fileName;
-    this.in = new Scanner(new File(file));
+    try {
 
+
+        String file = "C:\\Users\\Vasilisa\\Laba5\\out\\production\\Laba5\\com\\company\\" + fileName;
+        this.in = new Scanner(new File(file));
+    }catch (FileNotFoundException e){
+        System.out.println("Полный взлом жЁпы,чувак, файл не найден");
+    }
 }
 private Scanner in;
 private String fileLine;
