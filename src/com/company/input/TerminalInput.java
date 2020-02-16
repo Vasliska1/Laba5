@@ -1,4 +1,6 @@
-package com.company;
+package com.company.input;
+
+import com.company.input.IOInterface;
 
 import java.util.Scanner;
 

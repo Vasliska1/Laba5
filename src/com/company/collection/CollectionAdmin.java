@@ -1,4 +1,8 @@
-package com.company;
+package com.company.collection;
+import com.company.basis.*;
+import com.company.exception.InncorrectValue;
+import com.company.input.FileInput;
+import com.company.input.IOInterface;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -64,7 +68,7 @@ public class CollectionAdmin {
                     try {
                         this.executeScript(rightCommand[1]);
                     }catch (FileNotFoundException e){
-                        System.out.println("Полный взлом жЁпы, чувак, файл не найден))");
+                        System.out.println("Файл не найден))");
                     }
                     break;
                 case "remove_lower":

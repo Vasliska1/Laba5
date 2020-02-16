@@ -1,4 +1,6 @@
-package com.company;
+package com.company.collection;
+
+import com.company.basis.HumanBeing;
 
 import javax.xml.bind.annotation.*;
 import java.util.*;

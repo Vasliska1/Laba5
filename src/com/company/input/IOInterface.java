@@ -1,4 +1,4 @@
-package com.company;
+package com.company.input;
 
 public interface IOInterface {
     String getNextInput();

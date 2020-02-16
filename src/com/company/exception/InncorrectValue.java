@@ -1,4 +1,4 @@
-package com.company;
+package com.company.exception;
 
 public class InncorrectValue extends Exception {
         public InncorrectValue(String message) {

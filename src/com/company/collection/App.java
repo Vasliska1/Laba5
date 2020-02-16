@@ -1,6 +1,7 @@
-package com.company;
+package com.company.collection;
+import com.company.input.TerminalInput;
+
 import java.io.IOException;
-import java.util.Scanner;
 
 public class App {
 
