@@ -1,4 +1,7 @@
 package com.company;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 import java.io.*;
 import java.util.*;
 
@@ -13,8 +16,9 @@ public class CollectionAdmin {
         this.humanBeing = humanBeing;
     }
 
-    public void doCommand(String inputCommand) throws IOException {
-        rightCommand = inputCommand.toLowerCase().trim().split(" ", 2);
+    public void doCommand(IOInterface inputCommand) throws IOException {
+        rightCommand = inputCommand.getCurrentInput().trim().split(" ",2);
+      //  rightCommand = inputCommand.toLowerCase().trim().split(" ", 2);
         try {
             switch (rightCommand[0]) {
                 case "":
@@ -29,13 +33,16 @@ public class CollectionAdmin {
                     this.show();
                     break;
                 case "add":
-                    this.add();
+                    this.add(inputCommand);
                     break;
                 case "update":
-                    this.update(Integer.parseInt(rightCommand[1]));
+                    this.update(Integer.parseInt(rightCommand[1]), inputCommand);
                     break;
                 case "remove_by_id":
-                    this.removeById(Integer.parseInt(rightCommand[1]));
+                   try {
+                       this.removeById(Integer.parseInt(rightCommand[1])) ;
+                   }
+                   catch (Exception ex){};
                     break;
                 case "clear":
                     this.clear();
@@ -49,7 +56,7 @@ public class CollectionAdmin {
                     this.executeScript(rightCommand[1]);
                     break;
                 case "remove_lower":
-                    this.removeLower();
+                    this.removeLower(inputCommand);
                     break;
                 case "reorder":
                     this.reorder();
@@ -70,7 +77,8 @@ public class CollectionAdmin {
                     System.out.println("Такой команды нет.");
             }
         } catch (Exception ex) {
-            System.out.println("Ошибочка, дружочек.");
+            ex.printStackTrace();
+            System.out.println("Ошибочка, дружочек.") ;
         }
 
     }
@@ -106,48 +114,57 @@ public class CollectionAdmin {
 
     }
 
-    public void add() {
-        try {
+    public HumanBeing readElement(IOInterface command) {
+        //try {
             Boolean realHero;
             Boolean hasToothpick;
             WeaponType weapon = null;
             Mood mood = null;
-            System.out.println("Введите имя:");
-            Scanner sc = new Scanner(System.in);
-            String name = sc.nextLine().trim();
-            System.out.println("Введите координаты, x:");
-            Scanner sc1 = new Scanner(System.in);
-            Long x = sc1.nextLong();
-            System.out.println("y:");
-            Scanner sc2 = new Scanner(System.in);
-            Float y = sc2.nextFloat();
-            System.out.println("Человек реальный герой? Введите yes/no");
-            Scanner sc3 = new Scanner(System.in);
-            String answer = sc3.nextLine().toLowerCase().trim();
+            String name;
+
+           //do {
+               command.output("Введите имя:");
+               name = command.getNextInput().trim();
+           //}while(name.equals(""));
+
+
+           //do {
+               command.output("Введите координаты, x:");
+                   Long x= command.getNextLongInput();
+            //}while(x==0);
+
+           //float y = 0;
+          // do {
+               command.output("y");
+               Float y= command.getNextFloatInput();
+               //Scanner sc2 = new Scanner(System.in);
+               //if(sc2.hasNextFloat()){
+               //y = sc2.nextFloat();}}
+           //}
+           // while(y==0);
+               command.output("Человек реальный герой? Введите yes/no");
+           String answer=command.getNextInput();
             if (answer.equals("yes")) {
                 realHero = true;
             } else if (answer.equals("no")) {
                 realHero = false;
             } else {
                 realHero = null;
-                System.out.println("Не понимаю");
+                command.output("Не понимаю");
             }
-            System.out.println("У человека есть зубочистка? Введите yes/no");
-            Scanner sc4 = new Scanner(System.in);
-            String answer1 = sc4.nextLine().toLowerCase().trim();
+               command.output("У человека есть зубочистка? Введите yes/no");
+            String answer1 = command.getNextInput().trim();
             if (answer1.equals("yes")) {
                 hasToothpick = true;
             } else if (answer1.equals("no")) hasToothpick = false;
             else {
                 hasToothpick = null;
-                System.out.println("Не понимаю");
+                command.output("Не понимаю");
             }
-            System.out.println("Введите скорость удара:");
-            Scanner sc5 = new Scanner(System.in);
-            Long speed = sc5.nextLong();
-            System.out.println("Выберите и введите оружие: HAMMER, RIFLE, MACHINE GUN, BAT");
-            Scanner sc6 = new Scanner(System.in);
-            String answer2 = sc6.nextLine().toLowerCase().trim();
+               command.output("Введите скорость удара:");
+           Long speed = command.getNextLongInput();
+           command.output("Выберите и введите оружие: HAMMER, RIFLE, MACHINE GUN, BAT");
+            String answer2 = command.getNextInput().trim();
             switch (answer2) {
                 case "hammer":
                     weapon = WeaponType.HAMMER;
@@ -158,16 +175,16 @@ public class CollectionAdmin {
                 case "machine gun":
                     weapon = WeaponType.MACHINE_GUN;
                     break;
-                case "Bat":
+                case "bat":
                     weapon = WeaponType.BAT;
                     break;
                 default:
-                    System.out.println("Такого варианта нет");
+                    command.output("Такого варианта нет");
                     break;
             }
-            System.out.println("Выберите и введите настроение: SADNESS, APATHY, CALM, FRENZY");
-            Scanner sc7 = new Scanner(System.in);
-            String answer3 = sc7.nextLine().toLowerCase().trim();
+            command.output("Выберите и введите настроение: SADNESS, APATHY, CALM, FRENZY");
+
+            String answer3 = command.getNextInput().trim();
             switch (answer3) {
                 case "sadness":
                     mood = Mood.SADNESS;
@@ -182,38 +199,41 @@ public class CollectionAdmin {
                     mood = Mood.FRENZY;
                     break;
                 default:
-                    System.out.println("Такого варианта нет");
+                    command.output("Такого варианта нет");
                     break;
             }
-            System.out.println("Введите название машины:");
-            Scanner sc8 = new Scanner(System.in);
-            String nameOfCar = sc8.nextLine().trim();
+            command.output("Введите название машины:");
 
-            HumanBeing h3 = new HumanBeing(name, new Coordinates(x, y), realHero,
+            String nameOfCar = command.getNextInput().trim();
+
+            HumanBeing h = new HumanBeing(name, new Coordinates(x, y), realHero,
                     hasToothpick, speed, weapon, mood, new Car(nameOfCar));
-            humanBeing.getHumanBeings().add(h3);
-        } catch (InputMismatchException e) {
-            System.out.println("Чувак, попробуй еще раз");
+            return h;
+        //} catch (InputMismatchException e) {
+          //  System.out.println("Чувак, попробуй еще раз");
         }
+
+    public void add(IOInterface c) {
+        humanBeing.getHumanBeings().add(this.readElement(c));
     }
 
-    public void update(Integer id) {
-        HumanBeing h = null;
+    public void update(int id, IOInterface c) {
+        HumanBeing h = this.readElement(c);
         for (int i = 0; i < humanBeing.getHumanBeings().size(); i++) {
             if (humanBeing.getHumanBeings().get(i).getId() == id) {
-                h = humanBeing.getHumanBeings().get(i);
+                System.out.println(humanBeing.getHumanBeings().get(i).toString());
                 humanBeing.getHumanBeings().remove(i);
-                //доюавить новый
+                h.setId(id);
+                humanBeing.getHumanBeings().add(h);
             }
-            humanBeing.getHumanBeings().insertElementAt(h, i);
         }
         System.out.println("Элемент коллекции обновлен.");
 
 
     }
 
-    public void removeById(int id) {
-        try {
+    public void removeById(int id) throws Exception {
+
             int sizeStart= this.humanBeing.getHumanBeings().size();
 
             for (int i = 0; i < humanBeing.getHumanBeings().size(); i++) {
@@ -228,10 +248,7 @@ public class CollectionAdmin {
             else
                  throw  new Exception("Такой элементик не найден");
 
-        }
-catch (Exception ex) {
-    System.out.println(ex.getMessage());
-        }
+
 
     }
 
@@ -241,45 +258,33 @@ catch (Exception ex) {
         System.out.println("Коллекция очищена.");
     }
 
-    /*public void save() throws JAXBException {
+    public void save() throws JAXBException {
         StringWriter writer = new StringWriter();
         JAXBContext context1 = JAXBContext.newInstance(HumanBeingCollection.class);
         Marshaller marshaller = context1.createMarshaller();
         marshaller.marshal(humanBeing, writer);
         marshaller.marshal(humanBeing, new File(file));
-    }*/
+    }
+
 
     public void executeScript(String fileName) throws IOException {
-        String file = "C:\\Users\\Vasilisa\\Laba5\\out\\production\\Laba5\\com\\company\\" + fileName;
-        Scanner in = new Scanner(new File(file));
-        ArrayList<String> script = new ArrayList<>();
-        while (in.hasNext())
-            script.add(in.nextLine().toLowerCase());
-        System.out.println(script);
-        ArrayList<Integer> index = new ArrayList<>();
-        for (int i = 0; i <script.size() ; i++) {
-            if(script.get(i).startsWith("add")){
-                index.add(i);
-            }
+        FileInput input = new FileInput(fileName);
+        while (!input.getNextInput().equals("exit")) {
+            this.doCommand(input);
         }
-        for (String c : script) {
-            this.doCommand(c);
-        }
-
-
     }
 
 
-    public void removeLower() {
-        //add
-
-        /*for (int i = 0; i < humanBeing.size(); i++) {
-            if (humanBeing.get(i).compareTo(human) == -1) {
-                humanBeing.remove(i);
+    public void removeLower(IOInterface c) {
+        HumanBeing human = this.readElement(c);
+        for (int i = 0; i < humanBeing.getHumanBeings().size(); i++) {
+            if (humanBeing.getHumanBeings().get(i).compareTo(human) == -1) {
+                humanBeing.getHumanBeings().remove(i);
             }
-        }*/
+        }
 
     }
+
 
     public void reorder() {
         int i = 0;

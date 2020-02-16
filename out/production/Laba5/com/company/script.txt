@@ -1,12 +1,4 @@
-show
 add
-z
-9
-9
-no
-yes
-67
-hammer
-apathy
-c
+z 9 9 no yes 67 hammer apathy car
 show
+exit

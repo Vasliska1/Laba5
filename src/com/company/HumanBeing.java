@@ -80,6 +80,10 @@ public class HumanBeing implements Comparable<HumanBeing> {
             return -1;
         }
     }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 }
 
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -154,6 +158,8 @@ enum Mood {
     CALM,
     FRENZY;
 }
+
+
 
 class LocalDate1 extends XmlAdapter<String, LocalDate> {
 

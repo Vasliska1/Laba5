@@ -35,4 +35,9 @@ public class HumanBeingCollection {
                 "\nДата инициализации: " + date +
                 "\nКоличество элементов: " + this.getCollection().size();
     }
+
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
 }

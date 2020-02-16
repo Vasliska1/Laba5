@@ -12,15 +12,16 @@ public class App {
         this.fullInputCommand = "";
     }
 
-    public void begin() {
-        System.out.println("Здрарова! Введите help для просмотра возможных команд");
-        try (Scanner command = new Scanner(System.in)) {
-            while (!fullInputCommand.equals("exit")) {
-                fullInputCommand = command.nextLine();
-                this.admin.doCommand(fullInputCommand);
+    public void begin() throws IOException {
+        TerminalInput terminal = new TerminalInput();
+
+        terminal.output("Здрарова! Введите help для просмотра возможных команд");
+
+            while (!terminal.getNextInput().equals("exit")) {
+
+                this.admin.doCommand(terminal);
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
+
     }
 }
