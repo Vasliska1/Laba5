@@ -1,4 +1,5 @@
 package com.company;
+
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -10,15 +11,15 @@ public class CollectionAdmin {
     private HumanBeingCollection humanBeing;
     private String inputCommand = "";
     private String[] rightCommand;
-    public static final String file = "C:\\Users\\Vasilisa\\Laba5\\out\\production\\Laba5\\com\\company\\file.xml";
+    public static final String file = "C:\\Users\\Vasilisa\\Laba5\\src\\com\\company\\file.xml";
 
     public CollectionAdmin(HumanBeingCollection humanBeing) {
         this.humanBeing = humanBeing;
     }
 
     public void doCommand(IOInterface inputCommand) throws IOException {
-        rightCommand = inputCommand.getCurrentInput().trim().split(" ",2);
-      //  rightCommand = inputCommand.toLowerCase().trim().split(" ", 2);
+        rightCommand = inputCommand.getCurrentInput().trim().split(" ", 2);
+        //  rightCommand = inputCommand.toLowerCase().trim().split(" ", 2);
         try {
             switch (rightCommand[0]) {
                 case "":
@@ -34,15 +35,20 @@ public class CollectionAdmin {
                     break;
                 case "add":
                     this.add(inputCommand);
+
                     break;
                 case "update":
                     this.update(Integer.parseInt(rightCommand[1]), inputCommand);
                     break;
                 case "remove_by_id":
-                   try {
-                       this.removeById(Integer.parseInt(rightCommand[1])) ;
-                   }
-                   catch (Exception ex){};
+                    try {
+                        this.removeById(Integer.parseInt(rightCommand[1]));
+                    } catch (NumberFormatException e) {
+                        System.out.println("Мэн, введи число");
+                    } catch (Exception e) {
+                        System.out.println("Такой элементик не найден");
+                    }
+                    ;
                     break;
                 case "clear":
                     this.clear();
@@ -50,10 +56,19 @@ public class CollectionAdmin {
                 case "exit":
                     break;
                 case "save":
-                    //this.save();
+                    try {
+                        this.save();
+                    } catch (Exception e) {
+                        System.out.println("Не могу сохранить:");
+                        e.printStackTrace();
+                    }
                     break;
                 case "execute_script":
-                    this.executeScript(rightCommand[1]);
+                    try {
+                        this.executeScript(rightCommand[1]);
+                    } catch (IOException e) {
+                        e.getMessage();
+                    }
                     break;
                 case "remove_lower":
                     this.removeLower(inputCommand);
@@ -77,8 +92,9 @@ public class CollectionAdmin {
                     System.out.println("Такой команды нет.");
             }
         } catch (Exception ex) {
+            System.out.println("Ошибочка, дружочек.");
             ex.printStackTrace();
-            System.out.println("Ошибочка, дружочек.") ;
+
         }
 
     }
@@ -114,110 +130,114 @@ public class CollectionAdmin {
 
     }
 
-    public HumanBeing readElement(IOInterface command) {
-        //try {
-            Boolean realHero;
-            Boolean hasToothpick;
-            WeaponType weapon = null;
-            Mood mood = null;
-            String name;
+    public HumanBeing readElement(IOInterface command) throws InncorrectValue {
+        HumanBeing h = null;
+        try {
+        Boolean realHero;
+        Boolean hasToothpick;
+        WeaponType weapon = null;
+        Mood mood = null;
+        String name;
+        command.output("Введите имя:");
+        name = command.getNextInput().trim();
+        if (name.equals("")) {
+            throw new NullPointerException();
+        }
+        command.output("Введите координаты, x:");
+        Long x = command.getNextLongInput();
+        command.output("y");
+        Float y = command.getNextFloatInput();
+        command.output("Человек реальный герой? Введите yes/no");
+        String answer = command.getNextInput();
+        if (answer.equals("yes")) {
+            realHero = true;
+        } else if (answer.equals("no")) {
+            realHero = false;
+        } else {
+            throw new NullPointerException();
+        }
+        command.output("У человека есть зубочистка? Введите yes/no");
+        String answer1 = command.getNextInput().trim();
+        if (answer1.equals("yes")) {
+            hasToothpick = true;
+        } else if (answer1.equals("no")) hasToothpick = false;
+        else {
+            throw new NullPointerException();
+        }
+        command.output("Введите скорость удара:");
+        Long speed = command.getNextLongInput();
+        if (speed == null) {
+            throw new NullPointerException();
+        }
+        if (speed < -614) {
+            throw new InncorrectValue("Поле должно быть больше -614");
 
-           //do {
-               command.output("Введите имя:");
-               name = command.getNextInput().trim();
-           //}while(name.equals(""));
+        }
+        command.output("Выберите и введите оружие: HAMMER, RIFLE, MACHINE GUN, BAT");
+        String answer2 = command.getNextInput().trim();
+        switch (answer2) {
+            case "hammer":
+                weapon = WeaponType.HAMMER;
+                break;
+            case "rifle":
+                weapon = WeaponType.RIFLE;
+                break;
+            case "machine gun":
+                weapon = WeaponType.MACHINE_GUN;
+                break;
+            case "bat":
+                weapon = WeaponType.BAT;
+                break;
+            default:
+                command.output("Такого варианта нет");
+                break;
+        }
+        command.output("Выберите и введите настроение: SADNESS, APATHY, CALM, FRENZY");
 
+        String answer3 = command.getNextInput().trim();
+        switch (answer3) {
+            case "sadness":
+                mood = Mood.SADNESS;
+                break;
+            case "apathy":
+                mood = Mood.APATHY;
+                break;
+            case "calm":
+                mood = Mood.CALM;
+                break;
+            case "frenzy":
+                mood = Mood.FRENZY;
+                break;
+            default:
+                command.output("Такого варианта нет");
+                break;
+        }
+        command.output("Введите название машины:");
 
-           //do {
-               command.output("Введите координаты, x:");
-                   Long x= command.getNextLongInput();
-            //}while(x==0);
-
-           //float y = 0;
-          // do {
-               command.output("y");
-               Float y= command.getNextFloatInput();
-               //Scanner sc2 = new Scanner(System.in);
-               //if(sc2.hasNextFloat()){
-               //y = sc2.nextFloat();}}
-           //}
-           // while(y==0);
-               command.output("Человек реальный герой? Введите yes/no");
-           String answer=command.getNextInput();
-            if (answer.equals("yes")) {
-                realHero = true;
-            } else if (answer.equals("no")) {
-                realHero = false;
-            } else {
-                realHero = null;
-                command.output("Не понимаю");
-            }
-               command.output("У человека есть зубочистка? Введите yes/no");
-            String answer1 = command.getNextInput().trim();
-            if (answer1.equals("yes")) {
-                hasToothpick = true;
-            } else if (answer1.equals("no")) hasToothpick = false;
-            else {
-                hasToothpick = null;
-                command.output("Не понимаю");
-            }
-               command.output("Введите скорость удара:");
-           Long speed = command.getNextLongInput();
-           command.output("Выберите и введите оружие: HAMMER, RIFLE, MACHINE GUN, BAT");
-            String answer2 = command.getNextInput().trim();
-            switch (answer2) {
-                case "hammer":
-                    weapon = WeaponType.HAMMER;
-                    break;
-                case "rifle":
-                    weapon = WeaponType.RIFLE;
-                    break;
-                case "machine gun":
-                    weapon = WeaponType.MACHINE_GUN;
-                    break;
-                case "bat":
-                    weapon = WeaponType.BAT;
-                    break;
-                default:
-                    command.output("Такого варианта нет");
-                    break;
-            }
-            command.output("Выберите и введите настроение: SADNESS, APATHY, CALM, FRENZY");
-
-            String answer3 = command.getNextInput().trim();
-            switch (answer3) {
-                case "sadness":
-                    mood = Mood.SADNESS;
-                    break;
-                case "apathy":
-                    mood = Mood.APATHY;
-                    break;
-                case "calm":
-                    mood = Mood.CALM;
-                    break;
-                case "frenzy":
-                    mood = Mood.FRENZY;
-                    break;
-                default:
-                    command.output("Такого варианта нет");
-                    break;
-            }
-            command.output("Введите название машины:");
-
-            String nameOfCar = command.getNextInput().trim();
-
-            HumanBeing h = new HumanBeing(name, new Coordinates(x, y), realHero,
-                    hasToothpick, speed, weapon, mood, new Car(nameOfCar));
-            return h;
-        //} catch (InputMismatchException e) {
-          //  System.out.println("Чувак, попробуй еще раз");
+        String nameOfCar = command.getNextInput().trim();
+        if (nameOfCar.equals("")) {
+            throw new NullPointerException();
         }
 
-    public void add(IOInterface c) {
+        h = new HumanBeing(name, new Coordinates(x, y), realHero,
+                hasToothpick, speed, weapon, mood, new Car(nameOfCar));
+
+
+        } catch (InputMismatchException e) {
+            System.out.println("Надо вводить число");
+        } catch (NullPointerException e) {
+            System.out.println("Поле не может быть пустым");
+        }
+
+            return h;
+
+    }
+
+    public void add(IOInterface c) throws InncorrectValue {
         humanBeing.getHumanBeings().add(this.readElement(c));
     }
 
-    public void update(int id, IOInterface c) {
+    public void update(int id, IOInterface c) throws InncorrectValue {
         HumanBeing h = this.readElement(c);
         for (int i = 0; i < humanBeing.getHumanBeings().size(); i++) {
             if (humanBeing.getHumanBeings().get(i).getId() == id) {
@@ -234,21 +254,12 @@ public class CollectionAdmin {
 
     public void removeById(int id) throws Exception {
 
-            int sizeStart= this.humanBeing.getHumanBeings().size();
-
-            for (int i = 0; i < humanBeing.getHumanBeings().size(); i++) {
-                if (humanBeing.getHumanBeings().get(i).getId() == id) {
-                    humanBeing.getHumanBeings().remove(i);
-                }
+        for (int i = 0; i < humanBeing.getHumanBeings().size(); i++) {
+            if (humanBeing.getHumanBeings().get(i).getId() == id) {
+                humanBeing.getHumanBeings().remove(i);
             }
-            int sizeFinish = this.humanBeing.getHumanBeings().size();
-            if (sizeFinish<sizeFinish){
-                System.out.println("Элемент коллекции удалён.");
-            }
-            else
-                 throw  new Exception("Такой элементик не найден");
-
-
+        }
+        System.out.println("Элемент коллекции удалён.");
 
     }
 
@@ -264,6 +275,7 @@ public class CollectionAdmin {
         Marshaller marshaller = context1.createMarshaller();
         marshaller.marshal(humanBeing, writer);
         marshaller.marshal(humanBeing, new File(file));
+        System.out.println("Сохранено!");
     }
 
 
@@ -272,16 +284,18 @@ public class CollectionAdmin {
         while (!input.getNextInput().equals("exit")) {
             this.doCommand(input);
         }
+
     }
 
 
-    public void removeLower(IOInterface c) {
+    public void removeLower(IOInterface c) throws InncorrectValue {
         HumanBeing human = this.readElement(c);
         for (int i = 0; i < humanBeing.getHumanBeings().size(); i++) {
             if (humanBeing.getHumanBeings().get(i).compareTo(human) == -1) {
                 humanBeing.getHumanBeings().remove(i);
             }
         }
+        System.out.println("Успешно удалено!");
 
     }
 
@@ -299,6 +313,7 @@ public class CollectionAdmin {
             j--;
             i++;
         }
+        System.out.println("Отсортированно!");
 
     }
 
@@ -319,19 +334,19 @@ public class CollectionAdmin {
     }
 
     public void filterStartsWithName(String name1) {
-        try{
+        try {
             int k = 0;
-        for (int i = 0; i < humanBeing.getHumanBeings().size(); i++) {
-            if (humanBeing.getHumanBeings().get(i).getName().startsWith(name1)) {
-                System.out.println(humanBeing.getHumanBeings().get(i).toString());
-                k++;
-            }
-            if (k == 0){
-                throw new Exception("Сори, ты ошибся, такого начала у имен нет");
-            }
+            for (int i = 0; i < humanBeing.getHumanBeings().size(); i++) {
+                if (humanBeing.getHumanBeings().get(i).getName().startsWith(name1)) {
+                    System.out.println(humanBeing.getHumanBeings().get(i).toString());
+                    k++;
+                }
+                if (k == 0) {
+                    throw new Exception("Сори, ты ошибся, такого начала у имен нет");
+                }
 
-        }}
-        catch (Exception ex) {
+            }
+        } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
 
