@@ -1,4 +1,4 @@
-package com.company;
+package com.company.collection;
 
 
 import com.company.basis.HumanBeing;

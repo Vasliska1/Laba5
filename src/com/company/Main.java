@@ -1,5 +1,7 @@
 package com.company;
 
+import com.company.collection.App;
+
 public class Main {
    public static final String file = "C:\\Users\\Vasilisa\\Laba5\\src\\com\\company\\file.xml" ;
 
