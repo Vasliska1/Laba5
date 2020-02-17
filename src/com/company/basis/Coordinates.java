@@ -32,4 +32,41 @@ public class Coordinates {
         return "[x=" + this.getX() + ", y=" + this.getY() + "]";
     }
 
+   /* public void getX(Long x) {
+
+        try {
+            if (x == null)
+                throw new NullException("X");
+            else if (x < -671)
+                throw new InncorrectValue("X должен быть больше -671");
+            this.x = x;
+
+        } catch (NullException ex) {
+            ex.getMessage();
+        }
+        catch (InncorrectValue e){
+            e.getMessage();
+        }
+    }
+
+
+    public String setY(Float y) {
+
+        try {
+            if (y == null)
+                throw new NullException("y");
+            else if (y > 649)
+                throw new InncorrectValue("y должен быть меньше 649");
+            this.y = y;
+            return "";
+
+        } catch (InncorrectValue inncorrectValue) {
+            return inncorrectValue.getMessage();
+        } catch (NullException e) {
+           return e.getMessage();
+        }
+
+    }*/
 }
+
+

@@ -1,12 +1,10 @@
 package com.company.collection;
 
-import com.company.basis.*;
-import com.company.exception.InncorrectValue;
+import com.company.exception.IncorrectValue;
 import com.company.input.IOInterface;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.InputMismatchException;
 
 public class CommandHandler {
     private final HumanBeingCollection humanBeing;
@@ -19,9 +17,9 @@ public class CommandHandler {
         this.manager = new CollectionManager(humanBeing);
     }
 
-    public void doCommand(IOInterface inputCommand) throws IOException {
+    public void doCommand(IOInterface inputCommand) throws IOException, IncorrectValue {
         rightCommand = reader.returnCommand(inputCommand);
-        try {
+      //  try {
             switch (rightCommand[0]) {
                 case "":
                     break;
@@ -91,11 +89,11 @@ public class CommandHandler {
                 default:
                     System.out.println("Такой команды нет.");
             }
-        } catch (Exception ex) {
-            System.out.println("Ошибочка, дружочек.");
+        //} catch (Exception ex) {
+          //  System.out.println("Ошибочка, дружочек.");
 
 
-        }
+        //}
 
     }
 

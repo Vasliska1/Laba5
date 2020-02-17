@@ -1,5 +1,7 @@
 package com.company.basis;
 
+import com.company.exception.NullException;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -83,12 +85,80 @@ public class HumanBeing implements Comparable<com.company.basis.HumanBeing> {
         }
     }
 
+
+    public LocalDate getCreationDate() {
+        return creationDate;
+    }
+
+    public Boolean getRealHero() {
+        return realHero;
+    }
+
+    public Coordinates getCoordinates() {
+        return coordinates;
+    }
+
     public void setId(Integer id) {
         this.id = id;
     }
 
-    public void exception() {
-
+    public void setCoordinates(Coordinates coordinates) {
+        this.coordinates = coordinates;
     }
+
+    public void setCreationDate(LocalDate creationDate) {
+        this.creationDate = creationDate;
+    }
+
+   /* public String setRealHero(Boolean realHero) {
+        try {
+            if (realHero.equals(""))
+                throw new NullException("realHero");
+            this.realHero = realHero;
+            return "";
+        } catch (NullException e) {
+            return e.getMessage();
+        }
+    }
+
+     public String setHasToothpick (boolean hasToothpick){
+            try {
+                if (realHero.equals(""))
+                    throw new NullException("hasToothpick");
+                this.hasToothpick = hasToothpick;
+                return "";
+            } catch (NullException e) {
+                return e.getMessage();
+            }
+
+        }
+
+        public String setImpactSpeed (Long impactSpeed){
+            try {
+                if (realHero.equals(""))
+                    throw new NullException("impactSpeed");
+                this.impactSpeed = impactSpeed;
+                return "";
+            } catch (NullException e) {
+                return e.getMessage();
+            }
+
+
+        }
+
+        public void setWeaponType (WeaponType weaponType){
+            this.weaponType = weaponType;
+        }
+
+        public void setMood (Mood mood){
+            this.mood = mood;
+        }
+
+        public void setCar (Car car){
+            this.car = car;
+        }
+
+*/
+
 }
 

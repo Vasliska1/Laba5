@@ -1,7 +1,7 @@
 package com.company.collection;
 
 import com.company.basis.*;
-import com.company.exception.InncorrectValue;
+import com.company.exception.IncorrectValue;
 import com.company.input.FileInput;
 import com.company.input.IOInterface;
 
@@ -54,7 +54,7 @@ public class CollectionManager {
 
     }
 
-    public HumanBeing readElement(IOInterface command) throws InncorrectValue {
+    public HumanBeing readElement(IOInterface command) throws IncorrectValue {
         HumanBeing h = null;
         Boolean realHero = null;
         Boolean hasToothpick = null;
@@ -74,9 +74,9 @@ public class CollectionManager {
             x1 = command.getNextInput().trim();
             if (x1.matches("[-+]?\\d+")) {
                 x = Long.parseLong(x1);
-                if (x > 649) {
+                if (x < -671) {
                     x = 0;
-                    System.out.println("Поле должно быть меньше 649");
+                    System.out.println("Поле должно быть больше -671");
                 }
             }
         } while (x == 0);
@@ -88,9 +88,9 @@ public class CollectionManager {
             y1 = command.getNextInput();
             if (y1.matches("((-|\\\\+)?[0-9]+(\\\\.[0-9]+)?)+")) {
                 y = Float.parseFloat(y1);
-                if (y > -671) {
+                if (y > 649) {
                     y = 0;
-                    System.out.println("Поле должно быть меньше -671");
+                    System.out.println("Поле должно быть меньше 649");
                 }
             }
         } while (y == 0);
@@ -188,11 +188,11 @@ public class CollectionManager {
     }
 
 
-    public void add(IOInterface c) throws InncorrectValue {
+    public void add(IOInterface c) throws IncorrectValue {
         humanBeing.getHumanBeings().add(this.readElement(c));
     }
 
-    public void update(int id, IOInterface c) throws InncorrectValue {
+    public void update(int id, IOInterface c) throws IncorrectValue {
         int k = 0;
         for (int i = 0; i < humanBeing.getHumanBeings().size(); i++) {
             if (humanBeing.getHumanBeings().get(i).getId() == id) {
@@ -251,7 +251,7 @@ public class CollectionManager {
     }
 
 
-    public void executeScript(String fileName) throws IOException {
+    public void executeScript(String fileName) throws IOException, IncorrectValue {
         CommandHandler handler = new CommandHandler(humanBeing);
         FileInput input = new FileInput(fileName);
         while (!input.getNextInput().equals("exit")) {
@@ -261,7 +261,7 @@ public class CollectionManager {
     }
 
 
-    public void removeLower(IOInterface c) throws InncorrectValue {
+    public void removeLower(IOInterface c) throws IncorrectValue {
         HumanBeing human = this.readElement(c);
         for (int i = 0; i < humanBeing.getHumanBeings().size(); i++) {
             if (humanBeing.getHumanBeings().get(i).compareTo(human) == -1) {
