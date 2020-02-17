@@ -1,4 +1,12 @@
 add
-z 9 9 no yes 67 hammer apathy car
+zasa
+9
+34
+no
+yes
+67
+hammer
+apathy
+car
 show
 exit

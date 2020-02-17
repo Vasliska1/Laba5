@@ -5,18 +5,20 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class FileInput implements IOInterface {
-public FileInput(String fileName) throws FileNotFoundException {
-    try {
+    public FileInput(String fileName) throws FileNotFoundException {
+        try {
 
 
-        String file = "C:\\Users\\Vasilisa\\Laba5\\out\\production\\Laba5\\com\\company\\" + fileName;
-        this.in = new Scanner(new File(file));
-    }catch (FileNotFoundException e){
-        System.out.println("Файл не найден");
+            String file = "C:\\Users\\Vasilisa\\Laba5\\out\\production\\Laba5\\com\\company\\" + fileName;
+            this.in = new Scanner(new File(file));
+        } catch (FileNotFoundException e) {
+            System.out.println("Файл не найден");
+        }
     }
-}
-private Scanner in;
-private String fileLine;
+
+    private Scanner in;
+    private String fileLine;
+
     @Override
     public String getNextInput() {
 
