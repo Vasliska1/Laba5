@@ -20,6 +20,7 @@ public class CollectionManager {
     public CollectionManager(HumanBeingCollection humanBeing) {
         this.humanBeing = humanBeing;
     }
+
     public CommandHandler handler;
 
     public void help() {
@@ -55,48 +56,85 @@ public class CollectionManager {
 
     public HumanBeing readElement(IOInterface command) throws InncorrectValue {
         HumanBeing h = null;
-        try {
-            Boolean realHero;
-            Boolean hasToothpick;
-            WeaponType weapon = null;
-            Mood mood = null;
-            String name;
+        Boolean realHero = null;
+        Boolean hasToothpick = null;
+        WeaponType weapon = null;
+        Mood mood = null;
+
+        String name;
+        do {
             command.output("Введите имя:");
             name = command.getNextInput().trim();
-            if (name.equals("")) {
-                throw new NullPointerException();
-            }
+        } while (name.equals(""));
+
+        String x1 = null;
+        long x = 0;
+        do {
             command.output("Введите координаты, x:");
-            Long x = command.getNextLongInput();
+            x1 = command.getNextInput().trim();
+            if (x1.matches("[-+]?\\d+")) {
+                x = Long.parseLong(x1);
+                if (x > 649) {
+                    x = 0;
+                    System.out.println("Поле должно быть меньше 649");
+                }
+            }
+        } while (x == 0);
+
+        float y = 0;
+        String y1;
+        do {
             command.output("y");
-            Float y = command.getNextFloatInput();
+            y1 = command.getNextInput();
+            if (y1.matches("((-|\\\\+)?[0-9]+(\\\\.[0-9]+)?)+")) {
+                y = Float.parseFloat(y1);
+                if (y > -671) {
+                    y = 0;
+                    System.out.println("Поле должно быть меньше -671");
+                }
+            }
+        } while (y == 0);
+
+        String answer;
+        do {
             command.output("Человек реальный герой? Введите yes/no");
-            String answer = command.getNextInput();
+            answer = command.getNextInput();
             if (answer.equals("yes")) {
                 realHero = true;
             } else if (answer.equals("no")) {
                 realHero = false;
             } else {
-                throw new NullPointerException();
+                realHero = null;
             }
+        } while (!answer.equals("yes") && !answer.equals("no"));
+
+        String answer1 = null;
+        do {
             command.output("У человека есть зубочистка? Введите yes/no");
-            String answer1 = command.getNextInput().trim();
+            answer1 = command.getNextInput().trim();
             if (answer1.equals("yes")) {
                 hasToothpick = true;
-            } else if (answer1.equals("no")) hasToothpick = false;
-            else {
-                throw new NullPointerException();
+            } else if (answer1.equals("no")) {
+                hasToothpick = false;
+            } else {
+                hasToothpick = null;
             }
+        } while (!answer1.equals("yes") && !answer1.equals("no"));
+
+        String speed1;
+        long speed = -1;
+        do {
             command.output("Введите скорость удара:");
-            Long speed = command.getNextLongInput();
-            if (speed == null) {
-                throw new NullPointerException();
+            speed1 = command.getNextInput();
+            if (speed1.matches("[-+]?\\d+")) {
+                speed = Long.parseLong(y1);
             }
-            if (speed < -614) {
-                throw new InncorrectValue("Поле должно быть больше -614");
-            }
+        } while (y == -1);
+
+        String answer2;
+        do {
             command.output("Выберите и введите оружие: HAMMER, RIFLE, MACHINE GUN, BAT");
-            String answer2 = command.getNextInput().trim();
+            answer2 = command.getNextInput().trim();
             switch (answer2) {
                 case "hammer":
                     weapon = WeaponType.HAMMER;
@@ -114,8 +152,10 @@ public class CollectionManager {
                     command.output("Такого варианта нет");
                     break;
             }
-            command.output("Выберите и введите настроение: SADNESS, APATHY, CALM, FRENZY");
+        } while (!answer2.equals("bat") && !answer2.equals("machine gun") && !answer2.equals("hammer") && !answer2.equals("rifle"));
 
+        do {
+            command.output("Выберите и введите настроение: SADNESS, APATHY, CALM, FRENZY");
             String answer3 = command.getNextInput().trim();
             switch (answer3) {
                 case "sadness":
@@ -134,21 +174,14 @@ public class CollectionManager {
                     command.output("Такого варианта нет");
                     break;
             }
-            command.output("Введите название машины:");
-
-            String nameOfCar = command.getNextInput().trim();
-            if (nameOfCar.equals("")) {
-                throw new NullPointerException();
-            }
-            h = new HumanBeing(name, new Coordinates(x, y), realHero,
-                    hasToothpick, speed, weapon, mood, new Car(nameOfCar));
-        } catch (InputMismatchException e) {
-            System.out.println("Надо вводить число");
-        } catch (NullPointerException e) {
-            System.out.println("Поле не может быть пустым");
-        } catch (InncorrectValue e) {
-            System.out.println("Попробуйте еще раз");
         }
+        while (!answer2.equals("calm") && !answer2.equals("frenzy") && !answer2.equals("sadness") && !answer2.equals("apathy"));
+
+        command.output("Введите название машины:");
+        String nameOfCar = command.getNextInput().trim();
+
+        h = new HumanBeing(name, new Coordinates(x, y), realHero,
+                hasToothpick, speed, weapon, mood, new Car(nameOfCar));
 
         return h;
 
@@ -160,28 +193,45 @@ public class CollectionManager {
     }
 
     public void update(int id, IOInterface c) throws InncorrectValue {
-        HumanBeing h = this.readElement(c);
+        int k = 0;
         for (int i = 0; i < humanBeing.getHumanBeings().size(); i++) {
             if (humanBeing.getHumanBeings().get(i).getId() == id) {
-                System.out.println(humanBeing.getHumanBeings().get(i).toString());
-                humanBeing.getHumanBeings().remove(i);
-                h.setId(id);
-                humanBeing.getHumanBeings().add(h);
+                k++;
             }
         }
-        System.out.println("Элемент коллекции обновлен.");
+        if (k > 0) {
+            HumanBeing h = this.readElement(c);
+            for (int i = 0; i < humanBeing.getHumanBeings().size(); i++) {
+                if (humanBeing.getHumanBeings().get(i).getId() == id) {
+                    System.out.println(humanBeing.getHumanBeings().get(i).toString());
+                    humanBeing.getHumanBeings().remove(i);
+                    h.setId(id);
+                    humanBeing.getHumanBeings().add(h);
+                }
+            }
+            System.out.println("Элемент коллекции обновлен.");
+        } else {
+            System.out.println("Такого id нет");
+        }
 
 
     }
 
     public void removeById(int id) {
-
+        int k = 0;
         for (int i = 0; i < humanBeing.getHumanBeings().size(); i++) {
             if (humanBeing.getHumanBeings().get(i).getId() == id) {
-                humanBeing.getHumanBeings().remove(i);
+                k++;
             }
         }
-        System.out.println("Элемент коллекции удалён.");
+        if (k > 0) {
+            for (int i = 0; i < humanBeing.getHumanBeings().size(); i++) {
+                if (humanBeing.getHumanBeings().get(i).getId() == id) {
+                    humanBeing.getHumanBeings().remove(i);
+                }
+            }
+            System.out.println("Элемент коллекции удалён.");
+        } else System.out.println("Такого id нет");
 
     }
 
@@ -191,7 +241,7 @@ public class CollectionManager {
         System.out.println("Коллекция очищена.");
     }
 
-    public void save() throws JAXBException {
+    public void save() throws JAXBException, IOException {
         StringWriter writer = new StringWriter();
         JAXBContext context1 = JAXBContext.newInstance(HumanBeingCollection.class);
         Marshaller marshaller = context1.createMarshaller();
@@ -245,7 +295,7 @@ public class CollectionManager {
         System.out.println("Сумма значений полей impactSpeed = " + k);
     }
 
-    public void filterStartsWithName(String name1) throws Exception {
+    public void filterStartsWithName(String name1) {
 
         int k = 0;
         for (int i = 0; i < humanBeing.getHumanBeings().size(); i++) {
@@ -254,7 +304,7 @@ public class CollectionManager {
                 k++;
             }
             if (k == 0) {
-                throw new Exception("Сори, ты ошибся, такого начала у имен нет");
+                System.out.println("Сори, ты ошибся, такого начала у имен нет");
             }
 
         }

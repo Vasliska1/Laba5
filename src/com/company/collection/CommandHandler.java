@@ -35,6 +35,7 @@ public class CommandHandler {
                     manager.show();
                     break;
                 case "add":
+
                     manager.add(inputCommand);
                     break;
                 case "update":
@@ -58,15 +59,15 @@ public class CommandHandler {
                     try {
                         manager.save();
                     } catch (Exception e) {
-                        System.out.println("Не могу сохранить:");
-                        e.printStackTrace();
+                        System.out.println("Не могу сохранить:"+ e.getMessage());
+
                     }
                     break;
                 case "execute_script":
                     try {
                         manager.executeScript(rightCommand[1]);
                     } catch (FileNotFoundException e) {
-                        System.out.println("Файл не найден))");
+                        System.out.println("Файл не найден");
                     }
                     break;
                 case "remove_lower":
@@ -92,7 +93,7 @@ public class CommandHandler {
             }
         } catch (Exception ex) {
             System.out.println("Ошибочка, дружочек.");
-            ex.printStackTrace();
+
 
         }
 
