@@ -12,6 +12,10 @@ import javax.xml.bind.Marshaller;
 import java.io.*;
 import java.util.*;
 
+
+/**
+ *Класс, работаюший с коллекцией
+ */
 public class CollectionManager {
 
     private HumanBeingCollection humanBeing;
@@ -23,7 +27,9 @@ public class CollectionManager {
     }
 
     public CommandHandler handler;
-
+/*
+* метод выводит справку по всем командам
+ */
     public void help() {
         System.out.println(
                 "help: Вывести справку по доступным командам " +
@@ -44,9 +50,16 @@ public class CollectionManager {
                         "\nprint_field_descending_weapon_type weaponType: Вывести значения поля weaponType в порядке убывания ");
     }
 
+    /**
+     * метод выводит справку по коллекции
+     */
     public void info() {
         System.out.println(humanBeing.toString());
     }
+
+    /**
+     * метод показывает элементы коллекции
+     */
 
     public void show() {
         if (humanBeing.getHumanBeings().size() != 0) {
@@ -55,6 +68,12 @@ public class CollectionManager {
 
     }
 
+    /**
+     * метод считывает элемент
+     * @param command принимает значения полей класса HumanBeing
+     * @return возвращает объект класса HumanBeing
+     * @throws IncorrectValue
+     */
     public HumanBeing readElement(IOInterface command) throws IncorrectValue {
         HumanBeing h;
         Boolean realHero;
@@ -198,10 +217,21 @@ public class CollectionManager {
         return h;
     }
 
+    /**
+     * метод добавляет объект в коллекцию
+     * @param c
+     * @throws IncorrectValue
+     */
     public void add(IOInterface c) throws IncorrectValue {
         humanBeing.getHumanBeings().add(this.readElement(c));
     }
 
+    /**
+     * метод обновляет значение элемента коллекции по id
+     * @param id
+     * @param c
+     * @throws IncorrectValue
+     */
     public void update(int id, IOInterface c) throws IncorrectValue {
         int k = 0;
         for (int i = 0; i < humanBeing.getHumanBeings().size(); i++) {
@@ -227,6 +257,10 @@ public class CollectionManager {
 
     }
 
+    /**
+     * метод удаляет элемент коллекции по id
+     * @param id
+     */
     public void removeById(int id) {
         int k = 0;
         for (int i = 0; i < humanBeing.getHumanBeings().size(); i++) {
@@ -245,12 +279,19 @@ public class CollectionManager {
 
     }
 
-
+    /**
+     * очищает коллекцию
+     */
     public void clear() {
         humanBeing.getHumanBeings().clear();
         System.out.println("Коллекция очищена.");
     }
 
+    /**
+     * Сохраняет коллекцию в файл
+     * @throws JAXBException
+     * @throws IOException
+     */
     public void save() throws JAXBException, IOException {
         FileWriter writer = new FileWriter(file);
         JAXBContext context1 = JAXBContext.newInstance(HumanBeingCollection.class);
@@ -261,7 +302,13 @@ public class CollectionManager {
         writer.close();
     }
 
-
+    /**
+     * считывает скрипт и выполняет комманды
+     * @param fileName
+     * @throws IOException
+     * @throws IncorrectValue
+     * @throws NoArgument
+     */
     public void executeScript(String fileName) throws IOException, IncorrectValue, NoArgument {
         CommandHandler handler = new CommandHandler(humanBeing);
         FileInput input = new FileInput(fileName);
@@ -271,7 +318,11 @@ public class CollectionManager {
 
     }
 
-
+    /**
+     * удаляет элемент коллекции меньшие, чем заданный
+     * @param c
+     * @throws IncorrectValue
+     */
     public void removeLower(IOInterface c) throws IncorrectValue {
         HumanBeing human = this.readElement(c);
         for (int i = 0; i < humanBeing.getHumanBeings().size(); i++) {
@@ -283,13 +334,18 @@ public class CollectionManager {
 
     }
 
-
+    /**
+     * Сортирует коллекцию в обратном порядке
+     */
     public void reorder() {
         Collections.reverse(humanBeing.getHumanBeings());
         System.out.println("Отсортировано!");
 
     }
 
+    /**
+     * сортирует коллекцию по алфавиту
+     */
     public void sort() {
 
         Comparator<HumanBeing> comparator = Comparator.comparing(obj -> obj.getName());
@@ -298,6 +354,9 @@ public class CollectionManager {
 
     }
 
+    /**
+     * выводит сумму значений поля impactSpeed
+     */
     public void sumOfImpactSpeed() {
         long k = 0;
         for (int i = 0; i < humanBeing.getHumanBeings().size(); i++) {
@@ -306,6 +365,10 @@ public class CollectionManager {
         System.out.println("Сумма значений полей impactSpeed = " + k);
     }
 
+    /**
+     * выводит элементы, у который поле name начинается с заданной подстроки
+     * @param name1
+     */
     public void filterStartsWithName(String name1) {
 
         int k = 0;
@@ -323,6 +386,9 @@ public class CollectionManager {
         }
     }
 
+    /**
+     * сортирует в обратном порядке поле WeaponType
+     */
     public void printFieldDescendingWeaponType() {
         Vector<WeaponType> collection = new Vector<>();
         for (int i = 0; i < humanBeing.getHumanBeings().size(); i++) {
@@ -337,7 +403,8 @@ public class CollectionManager {
         }
 
 
-      /* прощай наш пузырек, мы всегда будем тебя помнить
+      /*
+      прощай наш пузырек, мы всегда будем тебя помнить
         for (int i = 0; i < humanBeing.getHumanBeings().size() - 1; i++) {
             for (int j = i + 1; j < humanBeing.getHumanBeings().size(); j++) {
                 if (humanBeing.getHumanBeings().get(i).getWeaponType().power < humanBeing.getHumanBeings().get(j).getWeaponType().power) {
