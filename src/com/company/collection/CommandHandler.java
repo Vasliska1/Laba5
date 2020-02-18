@@ -19,7 +19,7 @@ public class CommandHandler {
 
     public void doCommand(IOInterface inputCommand) throws IOException, IncorrectValue {
         rightCommand = reader.returnCommand(inputCommand);
-      //  try {
+
             switch (rightCommand[0]) {
                 case "":
                     break;
@@ -89,11 +89,7 @@ public class CommandHandler {
                 default:
                     System.out.println("Такой команды нет.");
             }
-        //} catch (Exception ex) {
-          //  System.out.println("Ошибочка, дружочек.");
 
-
-        //}
 
     }
 

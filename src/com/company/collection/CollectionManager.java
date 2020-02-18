@@ -148,15 +148,20 @@ public class CollectionManager {
                 case "bat":
                     weapon = WeaponType.BAT;
                     break;
+                case "":
+                    weapon = null;
+                    break;
                 default:
                     command.output("Такого варианта нет");
                     break;
             }
-        } while (!answer2.equals("bat") && !answer2.equals("machine gun") && !answer2.equals("hammer") && !answer2.equals("rifle"));
+        } while (!answer2.equals("bat") && !answer2.equals("machine gun") && !answer2.equals("hammer") &&
+                !answer2.equals("rifle") && !answer2.equals(""));
 
+        String answer3;
         do {
             command.output("Выберите и введите настроение: SADNESS, APATHY, CALM, FRENZY");
-            String answer3 = command.getNextInput().trim();
+            answer3 = command.getNextInput().trim();
             switch (answer3) {
                 case "sadness":
                     mood = Mood.SADNESS;
@@ -170,12 +175,16 @@ public class CollectionManager {
                 case "frenzy":
                     mood = Mood.FRENZY;
                     break;
+                case "":
+                    mood = null;
+                    break;
                 default:
                     command.output("Такого варианта нет");
                     break;
             }
         }
-        while (!answer2.equals("calm") && !answer2.equals("frenzy") && !answer2.equals("sadness") && !answer2.equals("apathy"));
+        while (!answer3.equals("calm") && !answer3.equals("frenzy") && !answer3.equals("sadness")
+                && !answer3.equals("apathy") && !answer3.equals(""));
 
         command.output("Введите название машины:");
         String nameOfCar = command.getNextInput().trim();
@@ -184,7 +193,6 @@ public class CollectionManager {
                 hasToothpick, speed, weapon, mood, new Car(nameOfCar));
 
         return h;
-
     }
 
 
