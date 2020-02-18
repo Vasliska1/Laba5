@@ -2,6 +2,7 @@ package com.company.collection;
 
 import com.company.basis.*;
 import com.company.exception.IncorrectValue;
+import com.company.exception.NoArgument;
 import com.company.input.FileInput;
 import com.company.input.IOInterface;
 
@@ -55,9 +56,9 @@ public class CollectionManager {
     }
 
     public HumanBeing readElement(IOInterface command) throws IncorrectValue {
-        HumanBeing h = null;
-        Boolean realHero = null;
-        Boolean hasToothpick = null;
+        HumanBeing h;
+        Boolean realHero;
+        Boolean hasToothpick;
         WeaponType weapon = null;
         Mood mood = null;
 
@@ -67,7 +68,7 @@ public class CollectionManager {
             name = command.getNextInput().trim();
         } while (name.equals(""));
 
-        String x1 = null;
+        String x1;
         long x = 0;
         do {
             command.output("Введите координаты, x:");
@@ -84,13 +85,13 @@ public class CollectionManager {
         float y = 0;
         String y1;
         do {
-            command.output("y");
+            command.output("y:");
             y1 = command.getNextInput();
             if (y1.matches("((-|\\\\+)?[0-9]+(\\\\.[0-9]+)?)+")) {
                 y = Float.parseFloat(y1);
                 if (y > 649) {
                     y = 0;
-                    System.out.println("Поле должно быть меньше 649");
+                    System.out.println("Максимальное значение y - 649");
                 }
             }
         } while (y == 0);
@@ -108,7 +109,7 @@ public class CollectionManager {
             }
         } while (!answer.equals("yes") && !answer.equals("no"));
 
-        String answer1 = null;
+        String answer1;
         do {
             command.output("У человека есть зубочистка? Введите yes/no");
             answer1 = command.getNextInput().trim();
@@ -129,7 +130,7 @@ public class CollectionManager {
             if (speed1.matches("[-+]?\\d+")) {
                 speed = Long.parseLong(y1);
             }
-        } while (y == -1);
+        } while (speed == -1);
 
         String answer2;
         do {
@@ -155,8 +156,9 @@ public class CollectionManager {
                     command.output("Такого варианта нет");
                     break;
             }
-        } while (!answer2.equals("bat") && !answer2.equals("machine gun") && !answer2.equals("hammer") &&
-                !answer2.equals("rifle") && !answer2.equals(""));
+        } while (!answer2.toLowerCase().equals("bat") && !answer2.toLowerCase().equals("machine gun") &&
+                !answer2.toLowerCase().equals("hammer") &&
+                !answer2.toLowerCase().equals("rifle") && !answer2.equals(""));
 
         String answer3;
         do {
@@ -183,8 +185,9 @@ public class CollectionManager {
                     break;
             }
         }
-        while (!answer3.equals("calm") && !answer3.equals("frenzy") && !answer3.equals("sadness")
-                && !answer3.equals("apathy") && !answer3.equals(""));
+        while (!answer3.toLowerCase().equals("calm") && !answer3.toLowerCase().equals("frenzy")
+                && !answer3.toLowerCase().equals("sadness")
+                && !answer3.toLowerCase().equals("apathy") && !answer3.equals(""));
 
         command.output("Введите название машины:");
         String nameOfCar = command.getNextInput().trim();
@@ -194,7 +197,6 @@ public class CollectionManager {
 
         return h;
     }
-
 
     public void add(IOInterface c) throws IncorrectValue {
         humanBeing.getHumanBeings().add(this.readElement(c));
@@ -250,16 +252,17 @@ public class CollectionManager {
     }
 
     public void save() throws JAXBException, IOException {
-        StringWriter writer = new StringWriter();
+        FileWriter writer = new FileWriter(file);
         JAXBContext context1 = JAXBContext.newInstance(HumanBeingCollection.class);
         Marshaller marshaller = context1.createMarshaller();
         marshaller.marshal(humanBeing, writer);
         marshaller.marshal(humanBeing, new File(file));
         System.out.println("Сохранено!");
+        writer.close();
     }
 
 
-    public void executeScript(String fileName) throws IOException, IncorrectValue {
+    public void executeScript(String fileName) throws IOException, IncorrectValue, NoArgument {
         CommandHandler handler = new CommandHandler(humanBeing);
         FileInput input = new FileInput(fileName);
         while (!input.getNextInput().equals("exit")) {
@@ -311,9 +314,11 @@ public class CollectionManager {
                 System.out.println(humanBeing.getHumanBeings().get(i).toString());
                 k++;
             }
-            if (k == 0) {
-                System.out.println("Сори, ты ошибся, такого начала у имен нет");
-            }
+        }
+
+        if (k == 0) {
+            System.out.println("Сори, ты ошибся, такого начала у имен нет");
+
 
         }
     }
