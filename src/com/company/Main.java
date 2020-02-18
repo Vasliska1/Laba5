@@ -2,6 +2,8 @@ package com.company;
 
 import com.company.exception.NullValueException;
 
+import java.io.IOException;
+
 public class Main {
    public static final String file = "C:\\Users\\Vasilisa\\Laba5\\src\\com\\company\\file.xml" ;
 
@@ -15,7 +17,8 @@ public class Main {
         app.begin(file);
 
        /* }
-        catch (NullPointerException e){
+        catch (
+    IOException e){
             System.out.println("Vi obosralis");
         }
 */
