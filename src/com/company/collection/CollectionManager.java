@@ -14,6 +14,7 @@ import java.util.*;
 
 
 /**
+ * @author Vasliska_and_Vlados_poveliteli_puzirkov))
  *Класс, работаюший с коллекцией
  */
 public class CollectionManager {
