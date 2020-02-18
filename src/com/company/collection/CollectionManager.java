@@ -405,7 +405,7 @@ public class CollectionManager {
 
 
       /*
-      прощай наш пузырек, мы всегда будем тебя помнить
+      навсегда в наших сердцах
         for (int i = 0; i < humanBeing.getHumanBeings().size() - 1; i++) {
             for (int j = i + 1; j < humanBeing.getHumanBeings().size(); j++) {
                 if (humanBeing.getHumanBeings().get(i).getWeaponType().power < humanBeing.getHumanBeings().get(j).getWeaponType().power) {
