@@ -9,9 +9,7 @@ public class FileInput implements IOInterface {
 
         String file = "C:\\Users\\Vasilisa\\Laba5\\out\\production\\Laba5\\com\\company\\" + fileName;
         this.in = new Scanner(new File(file));
-
-
-}
+    }
 
     private Scanner in;
     private String fileLine;

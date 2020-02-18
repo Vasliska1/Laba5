@@ -76,7 +76,6 @@ public class CommandHandler {
                 try {
                     if (rightCommand.length < 2) throw new NoArgument("Вы должны ввести имя скрипта");
                     manager.executeScript(rightCommand[1]);
-
                 } catch (NoArgument e) {
                     e.getMessage();
                 } catch (FileNotFoundException e) {
