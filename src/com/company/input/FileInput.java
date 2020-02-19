@@ -4,6 +4,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
+/**
+ * считывает комманды с файла
+ */
 public class FileInput implements IOInterface {
     public FileInput(String fileName) throws FileNotFoundException {
 
@@ -17,9 +20,13 @@ public class FileInput implements IOInterface {
     @Override
     public String getNextInput() {
 
-        fileLine = in.next().toLowerCase();
-        System.out.println(fileLine);
-        return fileLine;
+        if (in.hasNext()) {
+            fileLine = in.nextLine().toLowerCase();
+            System.out.println(fileLine);
+            return fileLine;
+        } else
+            return null;
+
 
     }
 

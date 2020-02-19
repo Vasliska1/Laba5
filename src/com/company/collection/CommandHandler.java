@@ -7,6 +7,10 @@ import com.company.input.IOInterface;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+/**
+ * Вызывает методы у CommandManager
+ * @see com.company.collection.CollectionManager
+ */
 public class CommandHandler {
     private final HumanBeingCollection humanBeing;
     CollectionManager manager;
@@ -18,6 +22,13 @@ public class CommandHandler {
         this.manager = new CollectionManager(humanBeing);
     }
 
+    /**
+     * С помошью класса CommandReader принимимает команды и вызвает их у CommandManager
+     * @param inputCommand
+     * @throws IOException
+     * @throws IncorrectValue
+     * @throws NoArgument
+     */
     public void doCommand(IOInterface inputCommand) throws IOException, IncorrectValue, NoArgument {
         rightCommand = reader.returnCommand(inputCommand);
 
@@ -64,6 +75,7 @@ public class CommandHandler {
                 manager.clear();
                 break;
             case "exit":
+                System.exit(0);
                 break;
             case "save":
                 try {

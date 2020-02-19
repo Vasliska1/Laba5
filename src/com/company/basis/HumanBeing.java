@@ -42,6 +42,10 @@ public class HumanBeing implements Comparable<com.company.basis.HumanBeing> {
         return weaponType;
     }
 
+    public Mood getMood() {
+        return mood;
+    }
+
     public HumanBeing(String name, Coordinates coordinates,
                       Boolean realHero, boolean hasToothpick, Long impactSpeed, WeaponType weaponType, Mood mood, Car car) {
         this.id = (int) (Math.random() * 1000);

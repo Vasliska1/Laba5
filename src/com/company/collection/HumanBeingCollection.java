@@ -5,6 +5,9 @@ import com.company.basis.HumanBeing;
 import javax.xml.bind.annotation.*;
 import java.util.*;
 
+/**
+ *
+ */
 @XmlRootElement(name = "humanbeings")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class HumanBeingCollection {

@@ -1,8 +1,10 @@
 package com.company.collection;
 
+import com.company.Main;
 import com.company.basis.*;
 import com.company.exception.IncorrectValue;
 import com.company.exception.NoArgument;
+import com.company.exception.NoCorrectValue;
 import com.company.input.FileInput;
 import com.company.input.IOInterface;
 
@@ -15,22 +17,25 @@ import java.util.*;
 
 /**
  * @author Vasliska_and_Vlados_poveliteli_puzirkov))
- *Класс, работаюший с коллекцией
+ * Класс, работаюший с коллекцией
  */
 public class CollectionManager {
-
+    private String file;
     private HumanBeingCollection humanBeing;
 
-    public static final String file = "C:\\Users\\Vasilisa\\Laba5\\src\\com\\company\\file.xml";
-
+    //public static final String file ="C:\\Users\\Vasilisa\\Laba5\\src\\com\\company\\file.xml";
+    public CollectionManager(String file){
+        this.file=file;
+    }
     public CollectionManager(HumanBeingCollection humanBeing) {
         this.humanBeing = humanBeing;
     }
 
     public CommandHandler handler;
-/*
-* метод выводит справку по всем командам
- */
+
+    /*
+     * метод выводит справку по всем командам
+     */
     public void help() {
         System.out.println(
                 "help: Вывести справку по доступным командам " +
@@ -71,6 +76,7 @@ public class CollectionManager {
 
     /**
      * метод считывает элемент
+     *
      * @param command принимает значения полей класса HumanBeing
      * @return возвращает объект класса HumanBeing
      * @throws IncorrectValue
@@ -220,6 +226,7 @@ public class CollectionManager {
 
     /**
      * метод добавляет объект в коллекцию
+     *
      * @param c
      * @throws IncorrectValue
      */
@@ -229,6 +236,7 @@ public class CollectionManager {
 
     /**
      * метод обновляет значение элемента коллекции по id
+     *
      * @param id
      * @param c
      * @throws IncorrectValue
@@ -260,6 +268,7 @@ public class CollectionManager {
 
     /**
      * метод удаляет элемент коллекции по id
+     *
      * @param id
      */
     public void removeById(int id) {
@@ -290,6 +299,7 @@ public class CollectionManager {
 
     /**
      * Сохраняет коллекцию в файл
+     *
      * @throws JAXBException
      * @throws IOException
      */
@@ -305,6 +315,7 @@ public class CollectionManager {
 
     /**
      * считывает скрипт и выполняет комманды
+     *
      * @param fileName
      * @throws IOException
      * @throws IncorrectValue
@@ -313,14 +324,22 @@ public class CollectionManager {
     public void executeScript(String fileName) throws IOException, IncorrectValue, NoArgument {
         CommandHandler handler = new CommandHandler(humanBeing);
         FileInput input = new FileInput(fileName);
-        while (!input.getNextInput().equals("exit")) {
-            handler.doCommand(input);
+        try {
+            while (input.getNextInput() != null) {
+                if (input.getCurrentInput().equals("execute_script " + fileName))
+                    throw new IncorrectValue("Не зацикливай меня(((");
+                handler.doCommand(input);
+            }
+        } catch (IncorrectValue e) {
+            e.getMessage();
         }
+
 
     }
 
     /**
      * удаляет элемент коллекции меньшие, чем заданный
+     *
      * @param c
      * @throws IncorrectValue
      */
@@ -368,6 +387,7 @@ public class CollectionManager {
 
     /**
      * выводит элементы, у который поле name начинается с заданной подстроки
+     *
      * @param name1
      */
     public void filterStartsWithName(String name1) {

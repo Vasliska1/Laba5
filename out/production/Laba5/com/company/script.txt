@@ -9,4 +9,4 @@ hammer
 apathy
 car
 show
-exit
+execute_script sc.txt
