@@ -8,9 +8,10 @@ import java.util.Scanner;
  * считывает комманды с файла
  */
 public class FileInput implements IOInterface {
+
     public FileInput(String fileName) throws FileNotFoundException {
 
-        String file = "C:\\Users\\Vasilisa\\Laba5\\out\\production\\Laba5\\com\\company\\" + fileName;
+      String file =  fileName;
         this.in = new Scanner(new File(file));
     }
 

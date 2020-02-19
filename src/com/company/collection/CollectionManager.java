@@ -23,12 +23,11 @@ public class CollectionManager {
     private String file;
     private HumanBeingCollection humanBeing;
 
-    //public static final String file ="C:\\Users\\Vasilisa\\Laba5\\src\\com\\company\\file.xml";
-    public CollectionManager(String file){
-        this.file=file;
-    }
-    public CollectionManager(HumanBeingCollection humanBeing) {
+    // static final String file ="C:\\Users\\Vasilisa\\Laba5\\src\\com\\company\\file.xml";
+
+    public CollectionManager(HumanBeingCollection humanBeing,String file) {
         this.humanBeing = humanBeing;
+        this.file=file;
     }
 
     public CommandHandler handler;
@@ -315,14 +314,13 @@ public class CollectionManager {
 
     /**
      * считывает скрипт и выполняет комманды
-     *
-     * @param fileName
+     * @param fileName принимает имя файла
      * @throws IOException
      * @throws IncorrectValue
      * @throws NoArgument
      */
     public void executeScript(String fileName) throws IOException, IncorrectValue, NoArgument {
-        CommandHandler handler = new CommandHandler(humanBeing);
+        CommandHandler handler = new CommandHandler(humanBeing, file);
         FileInput input = new FileInput(fileName);
         try {
             while (input.getNextInput() != null) {
@@ -339,8 +337,7 @@ public class CollectionManager {
 
     /**
      * удаляет элемент коллекции меньшие, чем заданный
-     *
-     * @param c
+     * @param c принимает объект
      * @throws IncorrectValue
      */
     public void removeLower(IOInterface c) throws IncorrectValue {

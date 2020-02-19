@@ -6,7 +6,7 @@ import javax.xml.bind.annotation.*;
 import java.util.*;
 
 /**
- *
+ *Хранит коллекцию
  */
 @XmlRootElement(name = "humanbeings")
 @XmlAccessorType(XmlAccessType.FIELD)

@@ -11,17 +11,17 @@ import java.io.IOException;
 import java.nio.file.Paths;
 
 public class Main {
-  // public static final String file = "C:\\Users\\Vasilisa\\Laba5\\src\\com\\company\\file.xml" ;
+  public static final String file = "C:\\Users\\Vasilisa\\Laba5\\src\\com\\company\\file.xml" ;
 
     public static void main(String[] args) throws NullValueException, IOException, NoCorrectValue, NoArgument, IncorrectValue, JAXBException {
       //  try {
-       String file = Paths.get(args[0]).toAbsolutePath().toString();
+      // String file = Paths.get(args[0]).toAbsolutePath().toString();
 
 
        // final String file = "C:\\Users\\Vasilisa\\Laba5\\src\\com\\company\\" + args[0];
 
-        CollectionManager filePath = new CollectionManager(file);
-        
+       // CollectionManager filePath = new CollectionManager(file);
+
         App app = new App();
         app.begin(file);
 

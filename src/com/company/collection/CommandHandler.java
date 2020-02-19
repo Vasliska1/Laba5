@@ -9,6 +9,7 @@ import java.io.IOException;
 
 /**
  * Вызывает методы у CommandManager
+ *
  * @see com.company.collection.CollectionManager
  */
 public class CommandHandler {
@@ -17,13 +18,14 @@ public class CommandHandler {
     CommandReader reader = new CommandReader();
     private String[] rightCommand;
 
-    public CommandHandler(HumanBeingCollection humanBeing) {
+    public CommandHandler(HumanBeingCollection humanBeing, String file) {
         this.humanBeing = humanBeing;
-        this.manager = new CollectionManager(humanBeing);
+        this.manager = new CollectionManager(humanBeing, file);
     }
 
     /**
      * С помошью класса CommandReader принимимает команды и вызвает их у CommandManager
+     *
      * @param inputCommand
      * @throws IOException
      * @throws IncorrectValue
@@ -93,35 +95,35 @@ public class CommandHandler {
                 } catch (FileNotFoundException e) {
                     System.out.println("Такой файлик не найден");
                 }
-                    break;
-                    case "remove_lower":
-                        manager.removeLower(inputCommand);
-                        break;
-                    case "reorder":
-                        manager.reorder();
-                        break;
-                    case "sort":
-                        manager.sort();
-                        break;
-                    case "sum_of_impact_speed":
-                        manager.sumOfImpactSpeed();
-                        break;
-                    case "filter_starts_with_name":
-                        try {
-                            if (rightCommand.length < 2) throw new NoArgument("Вы должны ввести начало имени");
-                            manager.filterStartsWithName(rightCommand[1]);
-                        } catch (NoArgument e) {
-                            e.getMessage();
-                        }
-                        break;
-                    case "print_field_descending_weapon_type":
-                        manager.printFieldDescendingWeaponType();
-                        break;
-                    default:
-                        System.out.println("Такой команды нет.");
+                break;
+            case "remove_lower":
+                manager.removeLower(inputCommand);
+                break;
+            case "reorder":
+                manager.reorder();
+                break;
+            case "sort":
+                manager.sort();
+                break;
+            case "sum_of_impact_speed":
+                manager.sumOfImpactSpeed();
+                break;
+            case "filter_starts_with_name":
+                try {
+                    if (rightCommand.length < 2) throw new NoArgument("Вы должны ввести начало имени");
+                    manager.filterStartsWithName(rightCommand[1]);
+                } catch (NoArgument e) {
+                    e.getMessage();
                 }
-
-
+                break;
+            case "print_field_descending_weapon_type":
+                manager.printFieldDescendingWeaponType();
+                break;
+            default:
+                System.out.println("Такой команды нет.");
         }
 
+
     }
+
+}

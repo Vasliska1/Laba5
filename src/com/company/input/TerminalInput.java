@@ -4,6 +4,9 @@ import com.company.input.IOInterface;
 
 import java.util.Scanner;
 
+/**
+ * считывает команды с клавиатуры
+ */
 public class TerminalInput implements IOInterface {
     private String currentInput;
     @Override
