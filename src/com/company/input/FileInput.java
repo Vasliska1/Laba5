@@ -2,6 +2,7 @@ package com.company.input;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.nio.file.Paths;
 import java.util.Scanner;
 
 /**
@@ -10,9 +11,18 @@ import java.util.Scanner;
 public class FileInput implements IOInterface {
 
     public FileInput(String fileName) throws FileNotFoundException {
+        try {
 
-      String file =  fileName;
-        this.in = new Scanner(new File(file));
+
+//String file = "C:\\Users\\Vasilisa\\Laba5\\src\\com\\company\\" + fileName;
+            String file = Paths.get(fileName).toAbsolutePath().toString();
+
+            this.in = new Scanner(new File(file));
+        }
+
+        catch(FileNotFoundException e){
+        System.out.println("vi nub");
+    }
     }
 
     private Scanner in;
