@@ -12,12 +12,12 @@ import java.io.File;
 import java.util.NoSuchElementException;
 
 public class Main {
-  //  public static final String file = "C:\\Users\\Vasilisa\\Laba5\\src\\com\\company\\file.xml";
+  public static final String file = "C:\\Users\\Vasilisa\\Laba5\\src\\com\\company\\file.xml";
 
     public static void main(String[] args) throws NullValueException, IOException, NoCorrectValue, NoArgument, IncorrectValue, JAXBException {
         try {
 
-            String file = Paths.get(args[0]).toAbsolutePath().toString();
+          //  String file = Paths.get(args[0]).toAbsolutePath().toString();
             File f = new File(file);
             if (!f.canRead() && !f.canWrite() && !f.canExecute())
                 throw new SecurityException();

@@ -418,7 +418,6 @@ public class CollectionManager {
     }
 
     /**
-     *
      * сортирует в обратном порядке поле WeaponType
      */
     public void printFieldDescendingWeaponType() {
@@ -436,6 +435,8 @@ public class CollectionManager {
         for (WeaponType w : collection) {
             System.out.print(w.toString() + " ");
         }
+    }
+}
  /*
       навсегда в наших сердцах
         for (int i = 0; i < humanBeing.getHumanBeings().size() - 1; i++) {
@@ -453,8 +454,3 @@ public class CollectionManager {
             System.out.println(humanBeing.getHumanBeings().get(k).getWeaponType());
         }
 */
- List<Integer> l = new LinkedList<>();
- fill(2);
-    }
-
-}
