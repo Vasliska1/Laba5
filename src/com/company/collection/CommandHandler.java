@@ -4,15 +4,13 @@ import com.company.exception.IncorrectValue;
 import com.company.exception.NoArgument;
 import com.company.input.IOInterface;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Vector;
 
 /**
  * Вызывает методы у CommandManager
  *
- * @see com.company.collection.CollectionManager
+ * @see CollectionManager
  */
 public class CommandHandler {
     private final HumanBeingCollection humanBeing;
@@ -22,9 +20,8 @@ public class CommandHandler {
 
     public CommandHandler(HumanBeingCollection humanBeing, String file) {
         this.humanBeing = humanBeing;
-        this.manager = new CollectionManager(humanBeing, file);
+        this.manager = new CollectionManager();
     }
-
 
     /**
      * С помошью класса CommandReader принимимает команды и вызвает их у CommandManager
@@ -34,7 +31,7 @@ public class CommandHandler {
      * @throws IncorrectValue
      * @throws NoArgument
      */
-    public void doCommand(IOInterface inputCommand) throws IOException, IncorrectValue, NoArgument {
+   /* public void doCommand(IOInterface inputCommand) throws IOException, IncorrectValue, NoArgument {
         rightCommand = reader.returnCommand(inputCommand);
 
         switch (rightCommand[0]) {
@@ -128,5 +125,5 @@ public class CommandHandler {
 
 
     }
-
+*/
 }

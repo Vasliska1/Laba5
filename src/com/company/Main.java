@@ -1,13 +1,10 @@
 package com.company;
 
-import com.company.collection.CollectionManager;
 import com.company.exception.*;
 
 import javax.xml.bind.JAXBException;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.io.File;
 import java.util.NoSuchElementException;
 

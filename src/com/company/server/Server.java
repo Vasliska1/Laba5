@@ -1,88 +1,231 @@
 package com.company.server;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import com.company.basis.HumanBeing;
+
+//import com.company.collection.CommandHandler;
+import com.company.collection.HumanBeingCollection;
+import com.company.commands.AbstractCommands;
+import com.company.commands.*;
+import com.company.exception.NoCorrectValue;
+import com.company.exception.NullValueException;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Scanner;
 
-    public class Server {
+public class Server {
+    private HumanBeingCollection serverCollection;
+    private Socket incoming;
+    private HashMap<String, AbstractCommands> allCommands;
+    //private static CommandHandler handler;
+    public static final String file = "C:\\Users\\Vasilisa\\Laba5\\src\\com\\company\\file.xml";
 
-        /**
-         *
-         * @param args
-         * @throws InterruptedException
-         */
-      public static void main(String[] args) throws InterruptedException {
-//  стартуем сервер на порту 3345
 
-            try (ServerSocket server= new ServerSocket(6969)){
-// становимся в ожидание подключения к сокету под именем - "client" на серверной стороне
-                Socket client = server.accept();
+    Server(HumanBeingCollection serverCollection, Socket incoming) {
+        this.serverCollection = serverCollection;
+        this.incoming = incoming;
+        allCommands.put("show", new Show(serverCollection));
+        allCommands.put("info", new Info(serverCollection));
+        allCommands.put("clear", new Clear(serverCollection));
+        allCommands.put("save", new Save(serverCollection));
+        allCommands.put("add", new Add(serverCollection));
+        allCommands.put("remove_by_id", new RemoveById(serverCollection));
+        allCommands.put("remove_lower", new RemoveLower(serverCollection));
+        allCommands.put("filter_starts_with_name", new FilterStartsWithName(serverCollection));
+        allCommands.put("print_field_descending_weapon_type", new PrintFieldDescendingWeaponType(serverCollection));
+        allCommands.put("sort", new Sort(serverCollection));
+        allCommands.put("update", new Update(serverCollection));
+        allCommands.put("execute_script", new ExecuteScript(serverCollection));
+        allCommands.put("help", new Help(serverCollection));
+        allCommands.put("reorder", new Reorder(serverCollection));
+        allCommands.put("sum_of_impact_speed", new SumOfImpactSpeed(serverCollection));
+        allCommands.put("exit", new Exit(serverCollection));
+    }
 
-// после хэндшейкинга сервер ассоциирует подключающегося клиента с этим сокетом-соединением
-                System.out.print("Connection accepted.");
+    public void runProgramm() {
+        try (ObjectInputStream getFromClient = new ObjectInputStream(incoming.getInputStream());
+             ObjectOutputStream sendToClient = new ObjectOutputStream(incoming.getOutputStream())) {
+            sendToClient.writeObject("\nЗдарова, православные. Введите help.");
 
-// инициируем каналы для  общения в сокете, для сервера
+            while (true) {
+                try {
 
-// канал записи в сокет
-                DataOutputStream out = new DataOutputStream(client.getOutputStream());
-                System.out.println("DataOutputStream  created");
+                    //  String elseCommand = "Такой командочки нет, введите help для справки";
+                    String requestFromClient = (String) getFromClient.readObject();
 
-                // канал чтения из сокета
-                DataInputStream in = new DataInputStream(client.getInputStream());
-                System.out.println("DataInputStream created");
+                    String[] parsedCommand = requestFromClient.trim().split(" ", 2);
+                    if (parsedCommand.length == 1)
+                        sendToClient.writeObject(allCommands.get(parsedCommand[0]).execute());
+                    else if (parsedCommand.length == 2)
+                        sendToClient.writeObject(allCommands.get(parsedCommand[0]).execute(parsedCommand[1]));
 
-// начинаем диалог с подключенным клиентом в цикле, пока сокет не закрыт
-                while(!client.isClosed()){
-
-                    System.out.println("Server reading from channel");
-
-// сервер ждёт в канале чтения (inputstream) получения данных клиента
-                    String entry = in.readUTF();
-
-// после получения данных считывает их
-                    System.out.println("READ from client message - "+entry);
-
-// и выводит в консоль
-                    System.out.println("Server try writing to channel");
-
-// инициализация проверки условия продолжения работы с клиентом по этому сокету по кодовому слову       - quit
-                    if(entry.equalsIgnoreCase("quit")){
-                        System.out.println("Client initialize connections suicide ...");
-                        out.writeUTF("Server reply - "+entry + " - OK");
-                        out.flush();
-                        Thread.sleep(3000);
-                        break;
-                    }
-
-// если условие окончания работы не верно - продолжаем работу - отправляем эхо-ответ  обратно клиенту
-                    out.writeUTF("Server reply - "+entry + " - OK");
-                    System.out.println("Server Wrote message to client.");
-
-// освобождаем буфер сетевых сообщений (по умолчанию сообщение не сразу отправляется в сеть, а сначала накапливается в специальном буфере сообщений, размер которого определяется конкретными настройками в системе, а метод  - flush() отправляет сообщение не дожидаясь наполнения буфера согласно настройкам системы
-                    out.flush();
-
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                } catch (JAXBException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
 
-// если условие выхода - верно выключаем соединения
-                System.out.println("Client disconnected");
-                System.out.println("Closing connections & channels.");
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
 
-                // закрываем сначала каналы сокета !
-                in.close();
-                out.close();
+    public static void main(String[] args) throws JAXBException, NullValueException, NoCorrectValue, IOException, ClassNotFoundException {
+        ServerSocket server = new ServerSocket(8000);
 
-                // потом закрываем сам сокет общения на стороне сервера!
-                client.close();
+        while (true) {
+            Socket clientSocket = server.accept();
+            ObjectInputStream getFromClient = new ObjectInputStream(clientSocket.getInputStream());
 
-                // потом закрываем сокет сервера который создаёт сокеты общения
-                // хотя при многопоточном применении его закрывать не нужно
-                // для возможности поставить этот серверный сокет обратно в ожидание нового подключения
+            String requestFromClient = (String) getFromClient.readObject();
+            System.out.println(requestFromClient);
+       // buildCollection();
+        //Server s = new Server(buildCollection(), clientSocket);
 
-                System.out.println("Closing connections & channels - DONE.");
-            } catch (IOException e) {
-                e.printStackTrace();
+
+    }
+    }
+
+
+
+
+    public static HumanBeingCollection buildCollection() throws JAXBException, NullValueException, NoCorrectValue {
+        File f = new File(file);
+        if (!f.canRead() && !f.canWrite() && !f.canExecute())
+            throw new SecurityException();
+
+        Scanner in = new Scanner(file);
+        StringBuffer data = new StringBuffer();
+        while (in.hasNext())
+            data.append(in.nextLine());
+        JAXBContext context1 = JAXBContext.newInstance(HumanBeingCollection.class);
+        Unmarshaller jaxbUnmarshaller = context1.createUnmarshaller();
+        HumanBeingCollection humanBeingCollection = (HumanBeingCollection) jaxbUnmarshaller.unmarshal(new File(file));
+
+        for (HumanBeing hb : humanBeingCollection.getHumanBeings()) {
+
+
+            if (hb.getName().trim().equals("")) throw new NullValueException("name"); //работает
+            if (hb.getCoordinates().getX() == null) throw new NullValueException("x"); //работает
+            if (hb.getCoordinates().getY() == null) throw new NullValueException("y"); //работает
+            if (hb.getCoordinates().getY() > 649)
+                throw new NoCorrectValue("Максимальное значение поля y - 649");
+            if (hb.getCoordinates().getX() < -671)
+                throw new NoCorrectValue("X должен быть больше -671"); //работает
+            if (hb.getCreationDate() == null) throw new NullValueException("date"); //работает
+            if (hb.getRealHero() == null) throw new NullValueException("RealHero"); //работает
+            if (hb.getId() <= 0) throw new NoCorrectValue("Id should be > 0"); //работает
+        }
+
+        humanBeingCollection.setDate(new Date());
+        for (HumanBeing humanBeing: humanBeingCollection.getHumanBeings() ){
+            System.out.println(humanBeingCollection.getHumanBeings());
+
+        }
+        return humanBeingCollection;
+      //  handler = new CommandHandler(humanBeingCollection, file.toString());
+    }
+//TerminalInput terminal = new TerminalInput();
+
+// App app = new App();
+// app.begin(f);
+
+
+}
+
+
+
+
+
+/*
+
+    public class Server {
+        public static final String file = "C:\\Users\\Владислава\\Desktop\\Laba5-master\\out\\production\\Laba5\\com\\company\\file.xml";
+        static private CommandHandler handler;
+
+        public static void main(String[] args) throws NullValueException, IOException, NoCorrectValue, NoArgument, IncorrectValue, JAXBException {
+            ServerSocket serverSocket = new ServerSocket(8000);
+            while (true) {
+                Socket clientSocket = serverSocket.accept();
+                System.out.println("Клиент подключился к серверу.");
+
+                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
+                        clientSocket.getOutputStream()));
+                BufferedReader reader = new BufferedReader(
+                        new InputStreamReader(clientSocket.getInputStream()));
+
+                writer.write("Клиент подключился к серверу.");
+                writer.newLine();
+                String request = reader.readLine();
+                String response = "I can execute " + request;
+
+                writer.write(response);
+                writer.newLine();
+                writer.flush();
+
+
+                try {
+// String file = Paths.get(args[0]).toAbsolutePath().toString();
+                    File f = new File(file);
+                    if (!f.canRead() && !f.canWrite() && !f.canExecute())
+                        throw new SecurityException();
+
+                    Scanner in = new Scanner(file);
+                    StringBuffer data = new StringBuffer();
+                    while (in.hasNext())
+                        data.append(in.nextLine());
+                    JAXBContext context1 = JAXBContext.newInstance(HumanBeingCollection.class);
+                    Unmarshaller jaxbUnmarshaller = context1.createUnmarshaller();
+                    HumanBeingCollection humanBeingCollection = (HumanBeingCollection) jaxbUnmarshaller.unmarshal(new File(file));
+
+                    for (HumanBeing hb : humanBeingCollection.getHumanBeings()) {
+
+
+                        if (hb.getName().trim().equals("")) throw new NullValueException("name"); //работает
+                        if (hb.getCoordinates().getX() == null) throw new NullValueException("x"); //работает
+                        if (hb.getCoordinates().getY() == null) throw new NullValueException("y"); //работает
+                        if (hb.getCoordinates().getY() > 649)
+                            throw new NoCorrectValue("Максимальное значение поля y - 649");
+                        if (hb.getCoordinates().getX() < -671)
+                            throw new NoCorrectValue("X должен быть больше -671"); //работает
+                        if (hb.getCreationDate() == null) throw new NullValueException("date"); //работает
+                        if (hb.getRealHero() == null) throw new NullValueException("RealHero"); //работает
+                        if (hb.getId() <= 0) throw new NoCorrectValue("Id should be > 0"); //работает
+                    }
+
+                    humanBeingCollection.setDate(new Date());
+                    handler = new CommandHandler(humanBeingCollection, file.toString());
+//TerminalInput terminal = new TerminalInput();
+
+// App app = new App();
+// app.begin(f);
+
+                } catch (SecurityException e) {
+                    System.out.println("vi nub");
+// } catch (FileNotFoundException e) {
+                    System.out.println("vii nub");
+                } catch (NoSuchElementException e) {
+                    System.exit(0);
+                }
+
+
+                reader.close();
+                writer.close();
+                clientSocket.close();
             }
         }
-}
+    } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+ */

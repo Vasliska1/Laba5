@@ -5,27 +5,29 @@ import com.company.basis.*;
 import com.company.exception.IncorrectValue;
 import com.company.exception.NoArgument;
 import com.company.exception.NoCorrectValue;
+import com.company.exception.NullValueException;
 import com.company.input.FileInput;
 import com.company.input.IOInterface;
+import com.company.input.TerminalInput;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 import java.io.*;
 import java.util.*;
 
 
-/**
- * @author Vasliska_and_Vlados_poveliteli_puzirkov))
- * Класс, работаюший с коллекцией
- */
-public class CollectionManager {
-    private String file;
+public class CollectionManager {}
+   /* private String file;
     private HumanBeingCollection humanBeing;
 
-    // static final String file ="C:\\Users\\Vasilisa\\Laba5\\src\\com\\company\\file.xml";
+    public HumanBeingCollection getHumanBeing() {
+        return humanBeing;
+    }
+// static final String file ="C:\\Users\\Vasilisa\\Laba5\\src\\com\\company\\file.xml";
 
-    public CollectionManager(HumanBeingCollection humanBeing, String file) {
+    public CollectionManager(HumanBeingCollection humanBeing, String file) throws NoCorrectValue, NullValueException {
         this.humanBeing = humanBeing;
         this.file = file;
     }
@@ -35,51 +37,134 @@ public class CollectionManager {
     /*
      * метод выводит справку по всем командам
      */
-    public void help() {
-        System.out.println(
-                "help: Вывести справку по доступным командам " +
-                        "\ninfo: Вывести информацию о коллекции " +
-                        "\nshow: Вывести все элементы коллекции в строковом представлении " +
-                        "\nadd: Добавить новый элемент в коллекцию " +
-                        "\nupdate id: Обновить значение элемента коллекции, id которого равен заданному " +
-                        "\nremove_by_id id: Удалить элемент из коллекции по его id " +
-                        "\nclear: Очистить коллекцию " +
-                        "\nsave: Сохранить коллекцию в файл " +
-                        "\nexecute_script file_name: Считать и исполнить скрипт из указанного файла " +
-                        "\nexit: Завершить программу (без сохранения в файл) " +
-                        "\nremove_lower: Удалить из коллекции все элементы, меньшие, чем заданный " +
-                        "\nreorder: Отсортировать коллекцию в порядке, обратном нынешнему " +
-                        "\nsort: Отсортировать коллекцию в естественном порядке " +
-                        "\nsum_of_impact_speed: Вывести сумму значений поля impactSpeed для всех элементов коллекции " +
-                        "\nfilter_starts_with_name name: Вывести элементы, значение поля name которых начинается с заданной подстроки " +
-                        "\nprint_field_descending_weapon_type weaponType: Вывести значения поля weaponType в порядке убывания ");
+
+   /* Scanner in = new Scanner(file);
+    StringBuffer data = new StringBuffer();
+        while(in.hasNext())
+                data.append(in.nextLine());
+    JAXBContext context1 = JAXBContext.newInstance(HumanBeingCollection.class);
+    Unmarshaller jaxbUnmarshaller = context1.createUnmarshaller();
+    HumanBeingCollection humanBeingCollection = (HumanBeingCollection) jaxbUnmarshaller.unmarshal(file);
+
+        for(
+    HumanBeing hb :humanBeingCollection.getHumanBeings())
+
+    {
+
+
+        if (hb.getName().trim().equals("")) throw new NullValueException("name"); //работает
+        if (hb.getCoordinates().getX() == null) throw new NullValueException("x"); //работает
+        if (hb.getCoordinates().getY() == null) throw new NullValueException("y"); //работает
+        if (hb.getCoordinates().getY() > 649) throw new NoCorrectValue("Максимальное значение поля y - 649");
+        if (hb.getCoordinates().getX() < -671) throw new NoCorrectValue("X должен быть больше -671"); //работает
+        if (hb.getCreationDate() == null) throw new NullValueException("date"); //работает
+        if (hb.getRealHero() == null) throw new NullValueException("RealHero"); //работает
+        if (hb.getId() <= 0) throw new NoCorrectValue("Id should be > 0"); //работает
     }
 
-    /**
-     * метод выводит справку по коллекции
-     */
-    public void info() {
+        humanBeingCollection.setDate(new
+
+    Date());
+    handler =new
+
+    CommandHandler(humanBeingCollection, file.toString());
+    TerminalInput terminal = new TerminalInput();
+
+        terminal.output("Здарова! Введите help для просмотра возможных команд");
+        while(!terminal.getNextInput().
+
+    equals("exit"))
+
+    {
+        handler.doComand(terminal);
+    }
+}
+
+
+    /*
+
+
+
+        public void help() {
+            System.out.println(
+                    "help: Вывести справку по доступным командам " +
+                            "\ninfo: Вывести информацию о коллекции " +
+                            "\nshow: Вывести все элементы коллекции в строковом представлении " +
+                            "\nadd: Добавить новый элемент в коллекцию " +
+                            "\nupdate id: Обновить значение элемента коллекции, id которого равен заданному " +
+                            "\nremove_by_id id: Удалить элемент из коллекции по его id " +
+                            "\nclear: Очистить коллекцию " +
+                            "\nsave: Сохранить коллекцию в файл " +
+                            "\nexecute_script file_name: Считать и исполнить скрипт из указанного файла " +
+                            "\nexit: Завершить программу (без сохранения в файл) " +
+                            "\nremove_lower: Удалить из коллекции все элементы, меньшие, чем заданный " +
+                            "\nreorder: Отсортировать коллекцию в порядке, обратном нынешнему " +
+                            "\nsort: Отсортировать коллекцию в естественном порядке " +
+                            "\nsum_of_impact_speed: Вывести сумму значений поля impactSpeed для всех элементов коллекции " +
+                            "\nfilter_starts_with_name name: Вывести элементы, значение поля name которых начинается с заданной подстроки " +
+                            "\nprint_field_descending_weapon_type weaponType: Вывести значения поля weaponType в порядке убывания ");
+        }
+
+        /**
+         * метод выводит справку по коллекции
+         **/
+   /* public void info() {
         System.out.println(humanBeing.toString());
     }
 
     /**
      * метод показывает элементы коллекции
      */
-    public void show() {
+  /*  public void show() {
         if (humanBeing.getHumanBeings().size() != 0) {
             humanBeing.getHumanBeings().forEach((value) -> System.out.println(value));
         } else System.out.println("Коллекция пуста.");
 
     }
-
-    /**
-     * метод считывает элемент
-     *
-     * @param command принимает значения полей класса HumanBeing
-     * @return возвращает объект класса HumanBeing
-     * @throws IncorrectValue
-     */
-    public HumanBeing readElement(IOInterface command) throws IncorrectValue {
+*/
+/**
+ * метод считывает элемент
+ *
+ * @param command принимает значения полей класса HumanBeing
+ * @return возвращает объект класса HumanBeing
+ * @throws IncorrectValue
+ * <p>
+ * метод обновляет значение элемента коллекции по id
+ * @param id
+ * @param c
+ * @throws IncorrectValue
+ * <p>
+ * метод удаляет элемент коллекции по id
+ * @param id
+ * <p>
+ * очищает коллекцию
+ * <p>
+ * Сохраняет коллекцию в файл
+ * @throws JAXBException
+ * @throws IOException
+ * <p>
+ * считывает скрипт и выполняет комманды
+ * @param fileName принимает имя файла
+ * @throws IOException
+ * @throws IncorrectValue
+ * @throws NoArgument
+ * <p>
+ * удаляет элемент коллекции меньшие, чем заданный
+ * @param c принимает объект
+ * @throws IncorrectValue
+ * <p>
+ * Сортирует коллекцию в обратном порядке
+ * <p>
+ * сортирует коллекцию по алфавиту
+ * <p>
+ * выводит сумму значений поля impactSpeed
+ * <p>
+ * выводит элементы, у который поле name начинается с заданной подстроки
+ * @param name1
+ * <p>
+ * сортирует в обратном порядке поле WeaponType
+ */
+   /* public HumanBeing readElement(IOInterface command) throws IncorrectValue {
         HumanBeing h = null;
         Boolean realHero;
         Boolean hasToothpick;
@@ -242,17 +327,18 @@ public class CollectionManager {
      * @param c
      * @throws IncorrectValue
      */
-    public void add(IOInterface c) throws IncorrectValue {
+    /*public void add(IOInterface c) throws IncorrectValue {
         humanBeing.getHumanBeings().add(this.readElement(c));
-    }
+    }*/
 
-    /**
-     * метод обновляет значение элемента коллекции по id
-     *
-     * @param id
-     * @param c
-     * @throws IncorrectValue
-     */
+/**
+ * метод обновляет значение элемента коллекции по id
+ *
+ * @param id
+ * @param c
+ * @throws IncorrectValue
+ */
+/*
     public void update(int id, IOInterface c) throws IncorrectValue {
         int k = 0;
         for (int i = 0; i < humanBeing.getHumanBeings().size(); i++) {
@@ -277,12 +363,14 @@ public class CollectionManager {
 
 
     }
+*/
 
-    /**
-     * метод удаляет элемент коллекции по id
-     *
-     * @param id
-     */
+/**
+ * метод удаляет элемент коллекции по id
+ *
+ * @param id
+ */
+/*
     public void removeById(int id) {
         int k = 0;
         for (int i = 0; i < humanBeing.getHumanBeings().size(); i++) {
@@ -300,21 +388,23 @@ public class CollectionManager {
         } else System.out.println("Такого id нет");
 
     }
+*/
 
-    /**
-     * очищает коллекцию
-     */
-    public void clear() {
+/**
+ * очищает коллекцию
+ */
+    /*public void clear() {
         humanBeing.getHumanBeings().clear();
         System.out.println("Коллекция очищена.");
-    }
+    }*/
 
-    /**
-     * Сохраняет коллекцию в файл
-     *
-     * @throws JAXBException
-     * @throws IOException
-     */
+/**
+ * Сохраняет коллекцию в файл
+ *
+ * @throws JAXBException
+ * @throws IOException
+ */
+/*
     public void save() throws JAXBException, IOException {
         FileWriter writer = new FileWriter(file);
         JAXBContext context1 = JAXBContext.newInstance(HumanBeingCollection.class);
@@ -324,16 +414,17 @@ public class CollectionManager {
         System.out.println("Сохранено!");
         writer.close();
     }
+*/
 
-    /**
-     * считывает скрипт и выполняет комманды
-     *
-     * @param fileName принимает имя файла
-     * @throws IOException
-     * @throws IncorrectValue
-     * @throws NoArgument
-     */
-    public void executeScript(String fileName) throws IOException, IncorrectValue, NoArgument {
+/**
+ * считывает скрипт и выполняет комманды
+ *
+ * @param fileName принимает имя файла
+ * @throws IOException
+ * @throws IncorrectValue
+ * @throws NoArgument
+ */
+    /*public void executeScript(String fileName) throws IOException, IncorrectValue, NoArgument {
         CommandHandler handler = new CommandHandler(humanBeing, file);
         FileInput input = new FileInput(fileName);
         try {
@@ -345,15 +436,15 @@ public class CollectionManager {
         } catch (IncorrectValue e) {
             e.getMessage();
         }
-    }
+    }*/
 
-    /**
-     * удаляет элемент коллекции меньшие, чем заданный
-     *
-     * @param c принимает объект
-     * @throws IncorrectValue
-     */
-    public void removeLower(IOInterface c) throws IncorrectValue {
+/**
+ * удаляет элемент коллекции меньшие, чем заданный
+ *
+ * @param c принимает объект
+ * @throws IncorrectValue
+ */
+    /*public void removeLower(IOInterface c) throws IncorrectValue {
         HumanBeing human = this.readElement(c);
         for (int i = 0; i < humanBeing.getHumanBeings().size(); i++) {
             if (humanBeing.getHumanBeings().get(i).compareTo(human) == -1) {
@@ -362,44 +453,44 @@ public class CollectionManager {
         }
         System.out.println("Успешно удалено!");
 
-    }
+    }*/
 
-    /**
-     * Сортирует коллекцию в обратном порядке
-     */
-    public void reorder() {
+/**
+ * Сортирует коллекцию в обратном порядке
+ */
+    /*public void reorder() {
         Collections.reverse(humanBeing.getHumanBeings());
+
         System.out.println("Отсортировано!");
 
-    }
-
-    /**
-     * сортирует коллекцию по алфавиту
-     */
-    public void sort() {
+    }*/
+/**
+ * сортирует коллекцию по алфавиту
+ */
+   /* public void sort() {
 
         Comparator<HumanBeing> comparator = Comparator.comparing(obj -> obj.getName());
         Collections.sort(this.humanBeing.getHumanBeings(), comparator);
         System.out.println("Коллекция отсортирована.");
 
     }
-
-    /**
-     * выводит сумму значений поля impactSpeed
-     */
+*/
+/**
+ * выводит сумму значений поля impactSpeed
+ *//*
     public void sumOfImpactSpeed() {
         long k = 0;
         for (int i = 0; i < humanBeing.getHumanBeings().size(); i++) {
             k += humanBeing.getHumanBeings().get(i).getImpactSpeed();
         }
         System.out.println("Сумма значений полей impactSpeed = " + k);
-    }
+    }*/
 
-    /**
-     * выводит элементы, у который поле name начинается с заданной подстроки
-     *
-     * @param name1
-     */
+/**
+ * выводит элементы, у который поле name начинается с заданной подстроки
+ *
+ * @param name1
+ *//*
     public void filterStartsWithName(String name1) {
 
         int k = 0;
@@ -415,11 +506,11 @@ public class CollectionManager {
 
 
         }
-    }
+    }*/
 
-    /**
-     * сортирует в обратном порядке поле WeaponType
-     */
+/**
+ * сортирует в обратном порядке поле WeaponType
+ *//*
     public void printFieldDescendingWeaponType() {
         Vector<WeaponType> collection = new Vector<>();
         for (int i = 0; i < humanBeing.getHumanBeings().size(); i++) {
@@ -436,7 +527,7 @@ public class CollectionManager {
             System.out.print(w.toString() + " ");
         }
     }
-}
+}*/
  /*
       навсегда в наших сердцах
         for (int i = 0; i < humanBeing.getHumanBeings().size() - 1; i++) {
@@ -454,3 +545,4 @@ public class CollectionManager {
             System.out.println(humanBeing.getHumanBeings().get(k).getWeaponType());
         }
 */
+

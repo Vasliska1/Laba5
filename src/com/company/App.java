@@ -49,7 +49,7 @@ public class App {
 
         terminal.output("Здарова! Введите help для просмотра возможных команд");
         while (!terminal.getNextInput().equals("exit")) {
-            handler.doCommand(terminal);
+        //    handler.doComand(terminal);
         }
     }
 }
