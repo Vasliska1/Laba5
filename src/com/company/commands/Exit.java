@@ -2,17 +2,15 @@ package com.company.commands;
 
 import com.company.collection.CollectionManager;
 import com.company.collection.HumanBeingCollection;
+import com.company.input.IOInterface;
 
 import javax.xml.bind.JAXBException;
 import java.io.IOException;
 
 public class Exit extends AbstractCommands {
-    public Exit(HumanBeingCollection collection) {
-        super(collection);
-    }
 
     @Override
-    public String execute() throws JAXBException, IOException {
+    public String execute(HumanBeingCollection h,IOInterface c) throws JAXBException, IOException {
         System.exit(0);
         return "chao";
     }

@@ -3,25 +3,23 @@ package com.company.commands;
 import com.company.basis.HumanBeing;
 import com.company.collection.CollectionManager;
 import com.company.collection.HumanBeingCollection;
+import com.company.input.IOInterface;
 
 import javax.xml.bind.JAXBException;
 import java.io.IOException;
 import java.util.Vector;
 
 public class FilterStartsWithName extends AbstractCommands {
-    public FilterStartsWithName(HumanBeingCollection collection) {
-        super(collection);
-    }
-//Нужно сделать возвращение коллекции
+
     @Override
-    public String execute(String name1) throws JAXBException, IOException {
+    public String execute(HumanBeingCollection h,String name1, IOInterface a) throws JAXBException, IOException {
 
 
             int k = 0;
             Vector<HumanBeing> c = new Vector<>();
-            for (int i = 0; i < getCollection().getHumanBeings().size(); i++) {
-                if (getCollection().getHumanBeings().get(i).getName().trim().startsWith(name1)) {
-                    c.add(getCollection().getHumanBeings().get(i));
+            for (int i = 0; i < h.getHumanBeings().size(); i++) {
+                if (h.getHumanBeings().get(i).getName().trim().startsWith(name1)) {
+                    c.add(h.getHumanBeings().get(i));
                     k++;
                 }
             }

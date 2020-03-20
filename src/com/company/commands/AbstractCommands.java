@@ -7,36 +7,22 @@ import com.company.input.IOInterface;
 
 import javax.xml.bind.JAXBException;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Vector;
 
-public abstract class AbstractCommands {
+public class AbstractCommands implements Serializable {
     //принимать file??
     public String file;
     private HumanBeingCollection collection;
 
-    public AbstractCommands(HumanBeingCollection collection) {
-        this.collection = collection;
-    }
 
-    public String execute() throws JAXBException, IOException {
+    public String execute(HumanBeingCollection h,IOInterface c) throws JAXBException, IOException {
         return null;
     }
 
-    public String execute(String s) throws JAXBException, IOException {
+    public String execute(HumanBeingCollection h,String s, IOInterface c) throws JAXBException, IOException {
         return null;
     }
 
-    public String execute(int s, IOInterface i) throws JAXBException, IOException {
-        return null;
-    }
-    public String execute(IOInterface i) throws JAXBException, IOException {
-        return null;
-    }
-
-
-    //public Vector<HumanBeing> execute(String s);
-    public HumanBeingCollection getCollection() {
-        return collection;
-    }
 
 }

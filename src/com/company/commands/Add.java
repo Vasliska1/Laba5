@@ -1,5 +1,6 @@
 package com.company.commands;
 
+import com.company.basis.HumanBeing;
 import com.company.collection.CollectionManager;
 import com.company.collection.HumanBeingCollection;
 import com.company.input.IOInterface;
@@ -9,14 +10,10 @@ import java.io.IOException;
 
 public class Add extends AbstractCommands {
 
-    public Add(HumanBeingCollection collection) {
-        super(collection);
-    }
-
     @Override
-    public String execute(IOInterface c) throws JAXBException, IOException {
-        ReadElement r = new ReadElement(getCollection());
-        getCollection().getHumanBeings().add(r.readElement(c));
+    public String execute(HumanBeingCollection h,IOInterface c) throws JAXBException, IOException {
+        ReadElement r = new ReadElement();
+        h.getHumanBeings().add(r.readElement(c));
         return "element dobavlen";
     }
 }

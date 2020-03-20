@@ -9,29 +9,28 @@ import javax.xml.bind.JAXBException;
 import java.io.IOException;
 
 public class Update extends AbstractCommands {
+    private String id;
 
-    public Update(HumanBeingCollection collection) {
-        super(collection);
-    }
-
-    // связать с ридэлементом( ридэлемент принимает коллекшн)
+    public Update(String id){
+    this.id =id;
+}
     @Override
-    public String execute(int id, IOInterface c) throws JAXBException, IOException {
+    public String execute(HumanBeingCollection humanBeingCollection,IOInterface c) throws JAXBException, IOException {
         int k = 0;
-        for (int i = 0; i < getCollection().getHumanBeings().size(); i++) {
-            if (getCollection().getHumanBeings().get(i).getId() == id) {
+        for (int i = 0; i < humanBeingCollection.getHumanBeings().size(); i++) {
+            if (humanBeingCollection.getHumanBeings().get(i).getId().toString().equals(id)) {
                 k++;
             }
         }
         if (k > 0) {
-            ReadElement element = new ReadElement(getCollection());
+            ReadElement element = new ReadElement();
             HumanBeing h = element.readElement(c);
-            for (int i = 0; i < getCollection().getHumanBeings().size(); i++) {
-                if (getCollection().getHumanBeings().get(i).getId() == id) {
+            for (int i = 0; i < humanBeingCollection.getHumanBeings().size(); i++) {
+                if (humanBeingCollection.getHumanBeings().get(i).getId().toString().equals(id)) {
 
-                    getCollection().getHumanBeings().remove(i);
-                    h.setId(id);
-                    getCollection().getHumanBeings().add(h);
+                    humanBeingCollection.getHumanBeings().remove(i);
+                    h.setId(Integer.parseInt(id));
+                    humanBeingCollection.getHumanBeings().add(h);
                 }
             }
             return "Элемент коллекции обновлен.";

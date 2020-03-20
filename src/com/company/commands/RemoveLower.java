@@ -10,18 +10,13 @@ import java.io.IOException;
 
 public class RemoveLower extends AbstractCommands {
 
-
-    public RemoveLower(HumanBeingCollection collection) {
-        super(collection);
-    }
-
     @Override
-    public String execute(IOInterface c) throws JAXBException, IOException {
-        ReadElement r = new ReadElement(getCollection());
+    public String execute(HumanBeingCollection h,IOInterface c) throws JAXBException, IOException {
+        ReadElement r = new ReadElement();
         HumanBeing human = r.readElement(c);
-        for (int i = 0; i < getCollection().getHumanBeings().size(); i++) {
-            if (getCollection().getHumanBeings().get(i).compareTo(human) == -1) {
-                getCollection().getHumanBeings().remove(i);
+        for (int i = 0; i < h.getHumanBeings().size(); i++) {
+            if (h.getHumanBeings().get(i).compareTo(human) == -1) {
+                h.getHumanBeings().remove(i);
             }
         }
         return "Успешно удалено!";

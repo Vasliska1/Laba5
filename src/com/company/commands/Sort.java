@@ -3,21 +3,18 @@ package com.company.commands;
 import com.company.basis.HumanBeing;
 import com.company.collection.CollectionManager;
 import com.company.collection.HumanBeingCollection;
+import com.company.input.IOInterface;
 
 import java.util.Collections;
 import java.util.Comparator;
 
 public class Sort extends AbstractCommands {
 
-    public Sort(HumanBeingCollection collection) {
-        super(collection);
-    }
-
     @Override
-    public String execute() {
+    public String execute(HumanBeingCollection h, IOInterface c) {
 
         Comparator<HumanBeing> comparator = Comparator.comparing(obj -> obj.getName());
-        Collections.sort(this.getCollection().getHumanBeings(), comparator);
+        Collections.sort(h.getHumanBeings(), comparator);
         return "Коллекция отсортирована.";
 
     }

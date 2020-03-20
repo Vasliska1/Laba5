@@ -1,41 +1,40 @@
 package com.company.server;
 
-import java.io.IOException;
-import java.net.InetAddress;
+import com.company.exception.NoCorrectValue;
+import com.company.exception.NullValueException;
+
+import javax.xml.bind.JAXBException;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import static com.company.server.Server.buildCollection;
+
 public class ServerStarted {
     public static void main(String[] args) {
-/*
-        try (ServerSocket server = new ServerSocket(8800)) {
-            System.out.print("Сервер работает. " + "\nПорт " + "\nОжидаем подключения клиентов ");
-            Thread pointer = new Thread(() -> {
-                while (!Thread.currentThread().isInterrupted()) {
-                    System.out.print(".");
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        System.out.print("\n");
-                        Thread.currentThread().interrupt();
-                    }
-                }
-            });
-            pointer.setDaemon(true);
-            pointer.start();
+        try {
+            ServerSocket server = new ServerSocket(8000);
+
             while (true) {
-                Socket incoming = server.accept();
-                pointer.interrupt();
-                System.out.println(incoming + " подключился к серверу.");
-                Runnable r = new Server(serverCollection, incoming);
-                Thread t = new Thread(r);
-                t.start();
+
+                Socket clientSocket = server.accept();
+                System.out.println("Клиент подключился к серверу.");
+
+                Server s = new Server(clientSocket);
+                s.runProgram();
+                clientSocket.close();
             }
-        } catch (IOException ex) {
-            System.err.println(ex.getMessage());
+        } catch (IOException e) {
+            e.printStackTrace();
             System.exit(1);
+        } catch (NullValueException e) {
+            e.printStackTrace();
+        } catch (JAXBException e) {
+            e.printStackTrace();
+        } catch (NoCorrectValue noCorrectValue) {
+            noCorrectValue.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
-*/
     }
 }
-

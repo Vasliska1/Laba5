@@ -2,12 +2,12 @@ package com.company.server;
 
 import com.company.basis.HumanBeing;
 
-//import com.company.collection.CommandHandler;
 import com.company.collection.HumanBeingCollection;
 import com.company.commands.AbstractCommands;
 import com.company.commands.*;
 import com.company.exception.NoCorrectValue;
 import com.company.exception.NullValueException;
+import com.company.input.TerminalInput;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -15,8 +15,10 @@ import javax.xml.bind.Unmarshaller;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class Server {
@@ -27,78 +29,39 @@ public class Server {
     public static final String file = "C:\\Users\\Vasilisa\\Laba5\\src\\com\\company\\file.xml";
 
 
-    Server(HumanBeingCollection serverCollection, Socket incoming) {
-        this.serverCollection = serverCollection;
+    Server(Socket incoming) {
+
         this.incoming = incoming;
-        allCommands.put("show", new Show(serverCollection));
-        allCommands.put("info", new Info(serverCollection));
-        allCommands.put("clear", new Clear(serverCollection));
-        allCommands.put("save", new Save(serverCollection));
-        allCommands.put("add", new Add(serverCollection));
-        allCommands.put("remove_by_id", new RemoveById(serverCollection));
-        allCommands.put("remove_lower", new RemoveLower(serverCollection));
-        allCommands.put("filter_starts_with_name", new FilterStartsWithName(serverCollection));
-        allCommands.put("print_field_descending_weapon_type", new PrintFieldDescendingWeaponType(serverCollection));
-        allCommands.put("sort", new Sort(serverCollection));
-        allCommands.put("update", new Update(serverCollection));
-        allCommands.put("execute_script", new ExecuteScript(serverCollection));
-        allCommands.put("help", new Help(serverCollection));
-        allCommands.put("reorder", new Reorder(serverCollection));
-        allCommands.put("sum_of_impact_speed", new SumOfImpactSpeed(serverCollection));
-        allCommands.put("exit", new Exit(serverCollection));
+
     }
 
-    public void runProgramm() {
-        try (ObjectInputStream getFromClient = new ObjectInputStream(incoming.getInputStream());
-             ObjectOutputStream sendToClient = new ObjectOutputStream(incoming.getOutputStream())) {
-            sendToClient.writeObject("\nЗдарова, православные. Введите help.");
+    public void runProgram() throws IOException, ClassNotFoundException, NoCorrectValue, NullValueException, JAXBException {
+        System.out.println(2);
+        try {
+            ObjectOutputStream writer = new ObjectOutputStream(
+                    incoming.getOutputStream());
+
+            writer.writeObject("\nЗдарова, православные. Введите help.");
+            writer.flush();
+            TerminalInput terminalInput = new TerminalInput();
 
             while (true) {
-                try {
-
-                    //  String elseCommand = "Такой командочки нет, введите help для справки";
-                    String requestFromClient = (String) getFromClient.readObject();
-
-                    String[] parsedCommand = requestFromClient.trim().split(" ", 2);
-                    if (parsedCommand.length == 1)
-                        sendToClient.writeObject(allCommands.get(parsedCommand[0]).execute());
-                    else if (parsedCommand.length == 2)
-                        sendToClient.writeObject(allCommands.get(parsedCommand[0]).execute(parsedCommand[1]));
-
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                } catch (JAXBException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
+                ObjectInputStream reader = new ObjectInputStream(
+                        incoming.getInputStream());
+                AbstractCommands inputCommands = (AbstractCommands) reader.readObject();
+                writer.writeObject(inputCommands.execute(buildCollection(), terminalInput));
             }
-        } catch (IOException ex) {
-            ex.printStackTrace();
+
+        } catch (ClassNotFoundException | IOException | NoCorrectValue | NullValueException e) {
+            e.printStackTrace();
+            System.exit(1);
         }
-    }
-
-    public static void main(String[] args) throws JAXBException, NullValueException, NoCorrectValue, IOException, ClassNotFoundException {
-        ServerSocket server = new ServerSocket(8000);
-
-        while (true) {
-            Socket clientSocket = server.accept();
-            ObjectInputStream getFromClient = new ObjectInputStream(clientSocket.getInputStream());
-
-            String requestFromClient = (String) getFromClient.readObject();
-            System.out.println(requestFromClient);
-       // buildCollection();
-        //Server s = new Server(buildCollection(), clientSocket);
-
 
     }
-    }
-
-
 
 
     public static HumanBeingCollection buildCollection() throws JAXBException, NullValueException, NoCorrectValue {
+        System.out.println(222);
         File f = new File(file);
         if (!f.canRead() && !f.canWrite() && !f.canExecute())
             throw new SecurityException();
@@ -127,17 +90,34 @@ public class Server {
         }
 
         humanBeingCollection.setDate(new Date());
-        for (HumanBeing humanBeing: humanBeingCollection.getHumanBeings() ){
+       /* for (HumanBeing humanBeing : humanBeingCollection.getHumanBeings()) {
             System.out.println(humanBeingCollection.getHumanBeings());
 
-        }
+        }*/
         return humanBeingCollection;
-      //  handler = new CommandHandler(humanBeingCollection, file.toString());
+        //  handler = new CommandHandler(humanBeingCollection, file.toString());
     }
 //TerminalInput terminal = new TerminalInput();
 
-// App app = new App();
+    // App app = new App();
 // app.begin(f);
+    public HashMap<String, AbstractCommands> getCommands() {
+        return this.allCommands;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Server)) return false;
+        Server that = (Server) o;
+        return Objects.equals(serverCollection, that.serverCollection) &&
+                Objects.equals(allCommands, that.allCommands);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(serverCollection, allCommands);
+    }
 
 
 }

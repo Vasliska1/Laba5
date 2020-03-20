@@ -9,10 +9,6 @@ import javax.xml.bind.JAXBException;
 import java.io.IOException;
 
 public class ReadElement extends AbstractCommands {
-    public ReadElement(HumanBeingCollection manager) {
-        super(manager);
-    }
-
 
     public HumanBeing readElement(IOInterface command) throws JAXBException, IOException {
         HumanBeing h = null;
@@ -170,4 +166,4 @@ public class ReadElement extends AbstractCommands {
         }
         return h;
     }
-    }
+}
