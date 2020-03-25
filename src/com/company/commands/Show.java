@@ -6,24 +6,32 @@ import com.company.collection.HumanBeingCollection;
 import com.company.input.IOInterface;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Show extends AbstractCommands {
 
     @Override
     public String execute(HumanBeingCollection h, IOInterface c) {
-        System.out.println(7);
-        List<HumanBeing> collection = h.getHumanBeings();
+      // return h.getHumanBeings().stream().collect(Collectors.toList()).toString();
+       // h.getHumanBeings().stream().toArray(Object[]::new);
+
+       /* System.out.println(7);
+        //List<HumanBeing> collection = h.getHumanBeings();
         StringBuilder result = new StringBuilder();
-        if (collection.size() != 0) {
+        if (h.getHumanBeings().size() != 0) {
             for (HumanBeing s : collection) {
                 result.append(h.getHumanBeings()).append("\n    ");
             }
             return result.toString();
-        } else return "Коллекция пуста.";
-    }
+        } else return "Коллекция пуста.";*/
 
-    /*     if (humanBeing.getHumanBeings().size() != 0) {
-            humanBeing.getHumanBeings().forEach((value) -> System.out.println(value));
-        } else System.out.println("Коллекция пуста.");*/
+/*
+        if (h.getHumanBeings().size() != 0) {
 
-}
+            return "d";
+        } else return "Коллекция пуста.";*/
+
+h.show();
+return "d";
+
+}}

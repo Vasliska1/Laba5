@@ -7,7 +7,7 @@ import java.util.*;
 import java.util.stream.Stream;
 
 /**
- *Хранит коллекцию
+ * Хранит коллекцию
  */
 @XmlRootElement(name = "humanbeings")
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -16,7 +16,7 @@ public class HumanBeingCollection {
     @XmlElement(name = "humanbeing")
     private Vector<HumanBeing> humanBeing;
     private Date date;
-   // Stream stream = Vector.Stream(humanBeing);
+    //Stream stream = humanBeing.stream();
 
     public Vector<HumanBeing> getHumanBeings() {
 
@@ -46,5 +46,15 @@ public class HumanBeingCollection {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public void reorder() {
+
+        Collections.reverse(humanBeing);
+        humanBeing.forEach(System.out::println);
+    }
+
+    public void show() {
+        humanBeing.forEach(System.out::println);
     }
 }

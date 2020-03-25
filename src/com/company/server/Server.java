@@ -90,10 +90,10 @@ public class Server {
         }
 
         humanBeingCollection.setDate(new Date());
-       /* for (HumanBeing humanBeing : humanBeingCollection.getHumanBeings()) {
-            System.out.println(humanBeingCollection.getHumanBeings());
+        for (HumanBeing humanBeing : humanBeingCollection.getHumanBeings()) {
+            System.out.println(humanBeing);
 
-        }*/
+        }
         return humanBeingCollection;
         //  handler = new CommandHandler(humanBeingCollection, file.toString());
     }

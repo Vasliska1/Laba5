@@ -12,7 +12,7 @@ public class Reorder extends AbstractCommands {
 
     @Override
     public String execute(HumanBeingCollection h, IOInterface c) throws JAXBException, IOException {
-        Collections.reverse(h.getHumanBeings());
+       h.reorder();
         return "Отсортировано!";
     }
 }
