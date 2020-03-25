@@ -4,6 +4,7 @@ import com.company.basis.HumanBeing;
 
 import javax.xml.bind.annotation.*;
 import java.util.*;
+import java.util.stream.Stream;
 
 /**
  *Хранит коллекцию
@@ -13,8 +14,9 @@ import java.util.*;
 public class HumanBeingCollection {
 
     @XmlElement(name = "humanbeing")
-    public Vector<HumanBeing> humanBeing;
+    private Vector<HumanBeing> humanBeing;
     private Date date;
+   // Stream stream = Vector.Stream(humanBeing);
 
     public Vector<HumanBeing> getHumanBeings() {
 

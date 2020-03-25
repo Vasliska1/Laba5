@@ -28,7 +28,6 @@ public class Client {
 
             while (!rightCommand[0].equals("exit")) {
                 this.getObjectCommand(rightCommand, clientSocket);
-
                 //  this.getObjectCommand(rightCommand,clientSocket);
                 // writer.writeObject(this.getObjectCommand(rightCommand));
                 System.out.println((String) reader.readObject());
