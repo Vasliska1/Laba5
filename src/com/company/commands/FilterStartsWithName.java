@@ -8,25 +8,20 @@ import com.company.input.IOInterface;
 import javax.xml.bind.JAXBException;
 import java.io.IOException;
 import java.util.Vector;
+import java.util.stream.Collectors;
 
 public class FilterStartsWithName extends AbstractCommands {
+    private String name1;
+
+    public FilterStartsWithName(String name1) {
+        this.name1 = name1;
+    }
 
     @Override
-    public String execute(HumanBeingCollection h,String name1, IOInterface a) throws JAXBException, IOException {
+    public String execute(HumanBeingCollection h, IOInterface a) throws JAXBException, IOException {
 
-
-            int k = 0;
-            Vector<HumanBeing> c = new Vector<>();
-            for (int i = 0; i < h.getHumanBeings().size(); i++) {
-                if (h.getHumanBeings().get(i).getName().trim().startsWith(name1)) {
-                    c.add(h.getHumanBeings().get(i));
-                    k++;
-                }
-            }
-            if (k == 0) {
-                System.out.println("Сори, ты ошибся, такого начала у имен нет");
-            }
-            return c.toString();
-        }
-
+        return h.getHumanBeings().stream().filter(s ->s.getName().trim().startsWith(name1)).
+                collect(Collectors.toList()).toString();
     }
+
+}

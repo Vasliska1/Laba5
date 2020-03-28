@@ -11,13 +11,9 @@ public class SumOfImpactSpeed extends AbstractCommands {
 
     @Override
     public String execute(HumanBeingCollection h, IOInterface c) throws JAXBException, IOException {
+        int sum = h.getHumanBeings().stream().mapToInt(x -> Math.toIntExact(x.getImpactSpeed())).sum();
 
-        //h.getHumanBeings().stream().reduce((s1, s2) -> s1 + s2).orElse(0);
-        long k = 0;
-        for (int i = 0; i < h.getHumanBeings().size(); i++) {
-            k += h.getHumanBeings().get(i).getImpactSpeed();
-        }
-        return "Сумма значений полей impactSpeed = " + k;
+        return "Сумма значений полей impactSpeed = " + sum;
     }
 
 }

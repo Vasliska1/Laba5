@@ -1,5 +1,6 @@
 package com.company.server;
 
+import com.company.commands.ExecuteScript;
 import com.company.exception.NoCorrectValue;
 import com.company.exception.NullValueException;
 
@@ -19,7 +20,7 @@ public class ServerStarted {
 
                 Socket clientSocket = server.accept();
                 System.out.println("Клиент подключился к серверу.");
-
+                ExecuteScript script = new ExecuteScript(clientSocket);
                 Server s = new Server(clientSocket);
                 s.runProgram();
                 clientSocket.close();

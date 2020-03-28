@@ -1,6 +1,8 @@
 package com.company.basis;
 
-public enum Mood {
+import java.io.Serializable;
+
+public enum Mood implements Serializable {
     SADNESS,
     APATHY,
     CALM,

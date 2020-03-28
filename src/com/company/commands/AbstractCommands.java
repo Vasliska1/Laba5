@@ -20,9 +20,7 @@ public class AbstractCommands implements Serializable {
         return null;
     }
 
-    public String execute(HumanBeingCollection h,String s, IOInterface c) throws JAXBException, IOException {
-        return null;
-    }
+
 
 
 }

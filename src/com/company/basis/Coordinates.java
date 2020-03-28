@@ -2,10 +2,11 @@ package com.company.basis;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import java.io.Serializable;
 
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Coordinates {
+public class Coordinates implements Serializable {
     private Long x; //Значение поля должно быть больше -671, Поле не может быть null
 
     private Float y; //Максимальное значение поля: 649, Поле не может быть null

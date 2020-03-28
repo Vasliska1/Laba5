@@ -22,14 +22,14 @@ import java.util.Objects;
 import java.util.Scanner;
 
 public class Server {
-    private HumanBeingCollection serverCollection;
+    private HumanBeingCollection serverCollection = buildCollection();
     private Socket incoming;
     private HashMap<String, AbstractCommands> allCommands;
     //private static CommandHandler handler;
     public static final String file = "C:\\Users\\Vasilisa\\Laba5\\src\\com\\company\\file.xml";
 
 
-    Server(Socket incoming) {
+    Server(Socket incoming) throws NoCorrectValue, NullValueException, JAXBException {
 
         this.incoming = incoming;
 
@@ -48,11 +48,13 @@ public class Server {
             while (true) {
                 ObjectInputStream reader = new ObjectInputStream(
                         incoming.getInputStream());
+                System.out.println(12);
                 AbstractCommands inputCommands = (AbstractCommands) reader.readObject();
-                writer.writeObject(inputCommands.execute(buildCollection(), terminalInput));
+                System.out.println(123);
+                writer.writeObject(inputCommands.execute(serverCollection, terminalInput));
             }
 
-        } catch (ClassNotFoundException | IOException | NoCorrectValue | NullValueException e) {
+        } catch (ClassNotFoundException | IOException e) {
             e.printStackTrace();
             System.exit(1);
         }

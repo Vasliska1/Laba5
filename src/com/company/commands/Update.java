@@ -9,10 +9,12 @@ import javax.xml.bind.JAXBException;
 import java.io.IOException;
 
 public class Update extends AbstractCommands {
+    private HumanBeing h;
     private String id;
 
-    public Update(String id){
+    public Update(String id, HumanBeing h){
     this.id =id;
+    this.h= h;
 }
     @Override
     public String execute(HumanBeingCollection humanBeingCollection,IOInterface c) throws JAXBException, IOException {
@@ -23,8 +25,7 @@ public class Update extends AbstractCommands {
             }
         }
         if (k > 0) {
-            ReadElement element = new ReadElement();
-            HumanBeing h = element.readElement(c);
+
             for (int i = 0; i < humanBeingCollection.getHumanBeings().size(); i++) {
                 if (humanBeingCollection.getHumanBeings().get(i).getId().toString().equals(id)) {
 
