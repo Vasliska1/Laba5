@@ -13,11 +13,11 @@ public class Client {
     //public static final String file = "C:\\Users\\Владислава\\Desktop\\Laba5-master\\out\\production\\Laba5\\com\\company\\file.xml";
 
     public void startWork() throws IOException, ClassNotFoundException {
-        System.out.println(1);
+
         Scanner scanner = new Scanner(System.in);
-        System.out.println(22);
+
         Socket clientSocket = new Socket("127.0.0.1", 8000);
-        System.out.println(2);
+     
         while (true) {
             System.out.println(3);
 
