@@ -16,7 +16,6 @@ public class HumanBeingCollection {
     @XmlElement(name = "humanbeing")
     private Vector<HumanBeing> humanBeing;
     private Date date;
-    //Stream stream = humanBeing.stream();
 
     public Vector<HumanBeing> getHumanBeings() {
 
@@ -48,13 +47,4 @@ public class HumanBeingCollection {
         this.date = date;
     }
 
-    public void reorder() {
-
-        Collections.reverse(humanBeing);
-        humanBeing.forEach(System.out::println);
-    }
-
-    public void show() {
-        humanBeing.forEach(System.out::println);
-    }
 }

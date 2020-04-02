@@ -36,15 +36,16 @@ public class Show extends AbstractCommands {
         } else return "Коллекция пуста.";*/
         //System.out.println(h.getHumanBeings());
 
-            List<HumanBeing> collection = h.getHumanBeings();
+          /*  List<HumanBeing> collection = h.getHumanBeings();
             StringBuilder result = new StringBuilder();
             if (h.getHumanBeings().size() != 0) {
                 for (int i = 0; i < h.getHumanBeings().size(); i++) {
                     result.append(h.getHumanBeings().get(i)).append("\n");
                  //   System.out.println(h.getHumanBeings().get(i));
-                }
-                return h.getHumanBeings().stream().map(s->s.toString().concat("/n")).toString();
-            } else return "Коллекция пуста.";
+                }*/
+                return h.getHumanBeings().stream().map(s->s.
+                        toString().concat("\n")).collect(Collectors.toList()).toString();
+
         }
 
     }
