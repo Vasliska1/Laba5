@@ -36,9 +36,8 @@ public class Server {
         try {
             ObjectOutputStream writer = new ObjectOutputStream(
                     incoming.getOutputStream());
-
-            writer.writeObject("\nЗдарова, православные. Введите help.");
-            writer.flush();
+            //writer.writeObject("\nЗдарова, православные. Введите help.");
+            //writer.flush();
             TerminalInput terminalInput = new TerminalInput();
 
             while (true) {
@@ -46,6 +45,7 @@ public class Server {
                         incoming.getInputStream());
                 System.out.println(12);
                 AbstractCommands inputCommands = (AbstractCommands) reader.readObject();
+                System.out.println(inputCommands);
                 System.out.println(123);
                 writer.writeObject(inputCommands.execute(serverCollection, terminalInput));
             }

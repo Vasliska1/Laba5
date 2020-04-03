@@ -25,7 +25,7 @@ private Socket clientSocket;
 
     @Override
     public String execute(HumanBeingCollection h, IOInterface c) throws JAXBException, IOException {
-        CommandHandler handler = new CommandHandler(h, file);
+        //CommandHandler handler = new CommandHandler(h, file);
         FileInput input = new FileInput(fileName);
        try {
            ObjectOutputStream writer = new ObjectOutputStream(clientSocket.getOutputStream());
