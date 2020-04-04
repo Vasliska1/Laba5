@@ -7,6 +7,8 @@ import com.company.input.IOInterface;
 
 import javax.xml.bind.JAXBException;
 import java.io.IOException;
+import java.util.Vector;
+import java.util.stream.Collectors;
 
 public class RemoveLower extends AbstractCommands {
 
@@ -17,14 +19,16 @@ public class RemoveLower extends AbstractCommands {
     }
 
     @Override
-    public String execute(HumanBeingCollection h,IOInterface c) throws JAXBException, IOException {
+    public String execute(HumanBeingCollection h, IOInterface c) throws JAXBException, IOException {
 
-        for (int i = 0; i < h.getHumanBeings().size(); i++) {
-            if (h.getHumanBeings().get(i).compareTo(human) == -1) {
-                h.getHumanBeings().remove(i);
-            }
+        Vector<HumanBeing> newCollection = h.getHumanBeings().stream().filter(s -> (s.compareTo(human) != -1)).
+                collect(Collectors.toCollection(Vector::new));
+        if (newCollection.size() == h.getHumanBeings().size()) {
+            return "Такого id нет";
         }
-        return "Успешно удалено!";
+        h.getHumanBeings().clear();
+        h.getHumanBeings().addAll(newCollection);
 
+        return "Успешно удалено!";
     }
 }

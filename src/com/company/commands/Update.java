@@ -7,37 +7,30 @@ import com.company.input.IOInterface;
 
 import javax.xml.bind.JAXBException;
 import java.io.IOException;
+import java.util.Vector;
+import java.util.stream.Collectors;
 
 public class Update extends AbstractCommands {
-    private HumanBeing h;
+    private HumanBeing human;
     private String id;
 
-    public Update(String id, HumanBeing h){
-    this.id =id;
-    this.h= h;
-}
+    public Update(String id, HumanBeing human) {
+        this.id = id;
+        this.human = human;
+    }
+
+
     @Override
-    public String execute(HumanBeingCollection humanBeingCollection,IOInterface c) throws JAXBException, IOException {
-        int k = 0;
-        for (int i = 0; i < humanBeingCollection.getHumanBeings().size(); i++) {
-            if (humanBeingCollection.getHumanBeings().get(i).getId().toString().equals(id)) {
-                k++;
-            }
-        }
-        if (k > 0) {
+    public String execute(HumanBeingCollection h, IOInterface c) throws JAXBException, IOException {
 
-            for (int i = 0; i < humanBeingCollection.getHumanBeings().size(); i++) {
-                if (humanBeingCollection.getHumanBeings().get(i).getId().toString().equals(id)) {
-
-                    humanBeingCollection.getHumanBeings().remove(i);
-                    h.setId(Integer.parseInt(id));
-                    humanBeingCollection.getHumanBeings().add(h);
-                }
-            }
-            return "Элемент коллекции обновлен.";
-        } else {
+        Vector<HumanBeing> newCollection = h.getHumanBeings().stream().filter(s -> (s.compareTo(human) != -1)).
+                collect(Collectors.toCollection(Vector::new));
+        if (newCollection.size() == h.getHumanBeings().size()) {
             return "Такого id нет";
         }
+        h.getHumanBeings().clear();
+        h.getHumanBeings().addAll(newCollection);
 
+        return "Успешно удалено!";
     }
 }

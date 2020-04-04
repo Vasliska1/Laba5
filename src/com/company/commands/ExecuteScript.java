@@ -33,11 +33,11 @@ private Socket clientSocket;
                 if (input.getCurrentInput().equals("execute_script " + fileName))
                     throw new IncorrectValue("Не зацикливай меня(((");
 
-                writer.writeObject(input);
             }
         } catch (IncorrectValue e) {
             e.getMessage();
         }
+
        return null;
     }
 }

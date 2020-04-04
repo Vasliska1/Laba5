@@ -36,8 +36,8 @@ public class Server {
         try {
             ObjectOutputStream writer = new ObjectOutputStream(
                     incoming.getOutputStream());
-            //writer.writeObject("\nЗдарова, православные. Введите help.");
-            //writer.flush();
+            writer.writeObject("\nЗдарова, православные. Введите help.");
+            writer.flush();
             TerminalInput terminalInput = new TerminalInput();
 
             while (true) {
