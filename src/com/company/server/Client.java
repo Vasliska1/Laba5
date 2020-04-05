@@ -22,50 +22,18 @@ public class Client {
     //public static final String file = "C:\\Users\\Владислава\\Desktop\\Laba5-master\\out\\production\\Laba5\\com\\company\\file.xml";
 
     public void startWork() throws IOException, ClassNotFoundException {
-      /*  Scanner scanner = new Scanner(System.in);
-
-        Socket clientSocket = new Socket("127.0.0.1", 8000);
-
-        while (true) {
-            System.out.println(3);
-
-            ObjectInputStream reader = new ObjectInputStream(clientSocket.getInputStream());
-            System.out.println(4);
-            System.out.println((String) reader.readObject());
-            Scanner sc = new Scanner(System.in);
-            String[] rightCommand = sc.nextLine().trim().split(" ", 2);
-            //  ObjectOutputStream writer = new ObjectOutputStream(clientSocket.getOutputStream());
-
-
-            while (!rightCommand[0].equals("exit")) {
-                this.getObjectCommand(rightCommand, clientSocket);
-                //  this.getObjectCommand(rightCommand,clientSocket);
-                // writer.writeObject(this.getObjectCommand(rightCommand));
-                System.out.println((String) reader.readObject());
-                rightCommand = sc.nextLine().trim().split(" ", 2);
-
-            }
-            //writer.close();
-            reader.close();
-            clientSocket.close();
-
-        }
-
-    }
-*/
 
         try {
-
             Selector selector = Selector.open();
             SocketChannel connectionClient = SocketChannel.open();
             connectionClient.configureBlocking(false);
             connectionClient.connect(new InetSocketAddress("127.0.0.1", 8000));
             connectionClient.register(selector, SelectionKey.OP_CONNECT);
-
             while (true) {
                 selector.select();
                 Iterator<SelectionKey> iterator = selector.selectedKeys().iterator();
                 while (iterator.hasNext()) {
+                    System.out.println(123);
                     SelectionKey key = (SelectionKey) iterator.next();
                     iterator.remove();
                     SocketChannel client = (SocketChannel) key.channel();
@@ -80,21 +48,17 @@ public class Client {
                         }
                         client.register(selector, SelectionKey.OP_READ);
                         continue;
-
                     }
-
                     if (key.isWritable()) {
                         System.out.println(11);
                         SendSocketObject(client);
-
-                        return;
+                        client.register(selector, SelectionKey.OP_READ);
                     }
                     if (key.isReadable()) {
                         System.out.println(22);
                         SocketChannel channel = (SocketChannel) key.channel();
                         getReader(channel);
                         client.register(selector, SelectionKey.OP_WRITE);
-                        return;
                     }
                 }
             }
@@ -106,17 +70,11 @@ public class Client {
     private void SendSocketObject(SocketChannel client) throws IOException, ClassNotFoundException {
         Scanner sc = new Scanner(System.in);
         String[] rightCommand = sc.nextLine().trim().split(" ", 2);
-
-
-
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
-            objectOutputStream.writeObject(getObjectCommand(rightCommand));
-            objectOutputStream.flush();
-            client.write(ByteBuffer.wrap(byteArrayOutputStream.toByteArray()));
-
-            //rightCommand = sc.nextLine().trim().split(" ", 2);
-           // System.out.println((String) objectInputStream.readObject());
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
+        objectOutputStream.writeObject(getObjectCommand(rightCommand));
+        objectOutputStream.flush();
+        client.write(ByteBuffer.wrap(byteArrayOutputStream.toByteArray()));
 
     }
 
@@ -124,90 +82,15 @@ public class Client {
 
         ByteBuffer data = ByteBuffer.allocate(102400);
         client.read(data);
-        System.out.println(new String(data.array(), StandardCharsets.UTF_8));
-        //ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(data.array());
-        //InputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
-
+        System.out.println(new String(data.array()).trim());
 
     }
 
-
-
-       /* try {
-
-            SocketChannel channel = SocketChannel.open();
-            channel.configureBlocking(false);
-            channel.connect(new InetSocketAddress("localhost", 1999));
-
-            Selector selector = Selector.open();
-            channel.register(selector, SelectionKey.OP_CONNECT);
-
-
-
-        }
-
-
-
-
-
-
-
-
-            InetSocketAddress hostAddress = new InetSocketAddress("localhost", 8090);
-            SocketChannel clientChannel = SocketChannel.open(hostAddress);
-
-            Selector selector = Selector.open();
-            clientChannel.configureBlocking(false);
-            SelectionKey key = clientChannel.register(selector, SelectionKey.OP_READ)
-
-                Buffer buffer = Buffer.allocate();
-                buffer.put(msg.getBytes());
-                buffer.flip();
-                int bytesWritten = clientChannel.write(buffer);
-                System.out.println(String.format("Sending Message: %s\nbufforBytes: %d", msg, bytesWritten));
-
-            clientChannel.close();
-            System.out.println("Client connection closed");
-
-
-        Scanner scanner = new Scanner(System.in);
-
-        //Socket clientSocket = new Socket("127.0.0.1", 8000);
-
-        while (true) {
-
-
-            ObjectInputStream reader = new ObjectInputStream(clientSocket.getInputStream());
-            System.out.println((String) reader.readObject());
-            Scanner sc = new Scanner(System.in);
-            String[] rightCommand = sc.nextLine().trim().split(" ", 2);
-            //  ObjectOutputStream writer = new ObjectOutputStream(clientSocket.getOutputStream());
-
-
-            while (!rightCommand[0].equals("exit")) {
-                this.getObjectCommand(rightCommand, clientSocket);
-
-                byte [] message = new String(messages [i]).getBytes();
-                ByteBuffer buffer = ByteBuffer.wrap(message);
-                client.write(buffer);
-                //  this.getObjectCommand(rightCommand,clientSocket);
-                // writer.writeObject(this.getObjectCommand(rightCommand));
-                System.out.println((String) reader.readObject());
-                rightCommand = sc.nextLine().trim().split(" ", 2);
-
-            }
-            //writer.close();
-            reader.close();
-            clientSocket.close();
-
-        }*/
-
-
     public AbstractCommands getObjectCommand(String[] rightCommand) throws IOException {
-        //ObjectOutputStream writer = new ObjectOutputStream(clientSocket.getOutputStream());
+
         AbstractCommands objectCommands = new AbstractCommands();
         TerminalInput terminalInput = new TerminalInput();
-        System.out.println(rightCommand[0]);
+
         switch (rightCommand[0]) {
             case "help":
                 objectCommands = new Help();
