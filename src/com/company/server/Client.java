@@ -14,6 +14,7 @@ import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
+import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 import java.util.Scanner;
 
@@ -71,26 +72,28 @@ public class Client {
                     if (key.isConnectable()) {
                         if (client.isConnectionPending()) {
                             try {
-                                System.out.println(00);
+                                System.out.println(001);
                                 client.finishConnect();
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
                         }
-                        client.register(selector, SelectionKey.OP_WRITE);
+                        client.register(selector, SelectionKey.OP_READ);
                         continue;
+
                     }
 
                     if (key.isWritable()) {
+                        System.out.println(11);
                         SendSocketObject(client);
-                        client.close();
+
                         return;
                     }
                     if (key.isReadable()) {
-                        System.out.println(23);
+                        System.out.println(22);
                         SocketChannel channel = (SocketChannel) key.channel();
                         getReader(channel);
-                        channel.close();
+                        client.register(selector, SelectionKey.OP_WRITE);
                         return;
                     }
                 }
@@ -118,12 +121,14 @@ public class Client {
     }
 
     public void getReader(SocketChannel client) throws IOException, ClassNotFoundException {
-        ByteBuffer data = ByteBuffer.allocate(1024);
-        client.read(data);
-        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(data.array());
-        ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
 
-        System.out.println(objectInputStream.readObject().toString());
+        ByteBuffer data = ByteBuffer.allocate(102400);
+        client.read(data);
+        System.out.println(new String(data.array(), StandardCharsets.UTF_8));
+        //ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(data.array());
+        //InputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
+
+
     }
 
 

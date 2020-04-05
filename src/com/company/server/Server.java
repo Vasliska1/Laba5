@@ -34,10 +34,14 @@ public class Server {
     public void runProgram() throws IOException, ClassNotFoundException, NoCorrectValue, NullValueException, JAXBException {
         System.out.println(2);
         try {
-            ObjectOutputStream writer = new ObjectOutputStream(
+           ObjectOutputStream writer = new ObjectOutputStream(
                     incoming.getOutputStream());
-            writer.writeObject("\nЗдарова, православные. Введите help.");
-            writer.flush();
+           /* ByteArrayInputStream writer = new ObjectOutputStream(
+                    //        incoming.getOutputStream());
+            writer.writeObject(" 212");
+            writer.flush();*/
+          // ByteArrayOutputStream writer = new ByteArrayOutputStream(1024);
+           writer.writeObject(" 23");
             TerminalInput terminalInput = new TerminalInput();
 
             while (true) {
@@ -51,8 +55,8 @@ public class Server {
             }
 
         } catch (ClassNotFoundException | IOException e) {
-            e.printStackTrace();
-            System.exit(1);
+           // e.printStackTrace();
+           // System.exit(1);
         }
 
     }

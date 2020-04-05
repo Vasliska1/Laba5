@@ -32,7 +32,7 @@ public class ServerStarted {
                 ExecuteScript script = new ExecuteScript(clientSocket);
                 Server s = new Server(clientSocket);
                 s.runProgram();
-                clientSocket.close();
+                //clientSocket.close();
             }
         } catch (IOException ex) {
             ex.printStackTrace();
