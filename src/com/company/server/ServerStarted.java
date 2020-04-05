@@ -16,21 +16,12 @@ public class ServerStarted {
 
         try (ServerSocket server = new ServerSocket(8000)) {
             System.out.println("serverok zarabotal");
-           /* Thread thread = new Thread(() -> {
-                while (!Thread.currentThread().isInterrupted()) {
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        Thread.currentThread().interrupt();
-                    }
-                }
-            });
-            thread.setDaemon(true);*/
+
             while (true) {
                 Socket clientSocket = server.accept();
                 System.out.println("Клиент подключился к серверу.");
-                ExecuteScript script = new ExecuteScript(clientSocket);
                 Server s = new Server(clientSocket);
+                System.out.println(clientSocket);
                 s.runProgram();
                 //clientSocket.close();
             }
@@ -47,4 +38,5 @@ public class ServerStarted {
             e.printStackTrace();
         }
     }
+
 }

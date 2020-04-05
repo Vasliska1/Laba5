@@ -8,13 +8,10 @@ import com.company.input.TerminalInput;
 
 import java.io.*;
 import java.net.InetSocketAddress;
-import java.net.Socket;
-import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
-import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 import java.util.Scanner;
 
@@ -51,7 +48,7 @@ public class Client {
                     }
                     if (key.isWritable()) {
                         System.out.println(11);
-                        SendSocketObject(client);
+                        SendSocketObject(client, selector);
                         client.register(selector, SelectionKey.OP_READ);
                     }
                     if (key.isReadable()) {
@@ -67,14 +64,17 @@ public class Client {
         }
     }
 
-    private void SendSocketObject(SocketChannel client) throws IOException, ClassNotFoundException {
+    private void SendSocketObject(SocketChannel client, Selector selector) throws IOException, ClassNotFoundException {
         Scanner sc = new Scanner(System.in);
+
         String[] rightCommand = sc.nextLine().trim().split(" ", 2);
+
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
         objectOutputStream.writeObject(getObjectCommand(rightCommand));
         objectOutputStream.flush();
         client.write(ByteBuffer.wrap(byteArrayOutputStream.toByteArray()));
+
 
     }
 
@@ -121,7 +121,9 @@ public class Client {
                 objectCommands = new Save();
                 break;
             case "execute_script":
+
                 objectCommands = new ExecuteScript(rightCommand[1]);
+                this.workWithScript(objectCommands);
                 break;
             case "remove_lower":
                 objectCommands = new RemoveLower(readElement(terminalInput));
@@ -141,13 +143,15 @@ public class Client {
             case "print_field_descending_weapon_type":
                 objectCommands = new PrintFieldDescendingWeaponType();
                 break;
-
+            default:
+                objectCommands = new NonCommands();
         }
         return objectCommands;
 
-        //writer.writeObject(objectCommands);
+    }
 
-        // return objectCommands;
+    public void workWithScript(AbstractCommands object){
+        
     }
 
     public HumanBeing readElement(IOInterface command) {

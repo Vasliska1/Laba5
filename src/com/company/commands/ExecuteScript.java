@@ -5,39 +5,50 @@ import com.company.collection.HumanBeingCollection;
 import com.company.exception.IncorrectValue;
 import com.company.input.FileInput;
 import com.company.input.IOInterface;
+import com.company.server.Server;
+import com.company.server.ServerStarted;
 
 import javax.xml.bind.JAXBException;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.net.Socket;
+import java.nio.channels.SocketChannel;
 
 public class ExecuteScript extends AbstractCommands {
 private String fileName;
-private Socket clientSocket;
+private Socket socket;
 
     public ExecuteScript(String fileName) {
         this.fileName = fileName;
 
     }
-    public ExecuteScript(Socket clientSocket){
-        this.clientSocket =clientSocket;
+
+    public void getSocket(Socket socket) {
+        this.socket = socket;
     }
 
     @Override
     public String execute(HumanBeingCollection h, IOInterface c) throws JAXBException, IOException {
-        //CommandHandler handler = new CommandHandler(h, file);
+
+        fileName = "C:\\Users\\Vasilisa\\Laba5\\src\\com\\company\\" + fileName;
+        System.out.println(fileName);
         FileInput input = new FileInput(fileName);
+
+        System.out.println();
        try {
-           ObjectOutputStream writer = new ObjectOutputStream(clientSocket.getOutputStream());
+           System.out.println(123);
             while (input.getNextInput() != null) {
                 if (input.getCurrentInput().equals("execute_script " + fileName))
                     throw new IncorrectValue("Не зацикливай меня(((");
-
+                System.out.println(12345);
+                OutputStream writer = socket.getOutputStream();
+                writer.write(input.getNextInput().getBytes());
             }
         } catch (IncorrectValue e) {
             e.getMessage();
         }
-
        return null;
     }
+
 }

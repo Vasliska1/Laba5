@@ -13,9 +13,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import java.io.*;
-import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketException;
 import java.util.*;
 
 public class Server {
@@ -24,11 +22,8 @@ public class Server {
 
     public static final String file = "C:\\Users\\Vasilisa\\Laba5\\src\\com\\company\\file.xml";
 
-
     Server(Socket incoming) throws NoCorrectValue, NullValueException, JAXBException {
-
         this.incoming = incoming;
-
     }
 
     public void runProgram() throws IOException, ClassNotFoundException, NoCorrectValue, NullValueException, JAXBException {
@@ -46,7 +41,14 @@ public class Server {
                 AbstractCommands inputCommands = (AbstractCommands) reader.readObject();
                 System.out.println(inputCommands);
                 System.out.println(123);
-                writer.write(inputCommands.execute(serverCollection, terminalInput).getBytes());
+                if(inputCommands instanceof ExecuteScript){
+                    System.out.println(1);
+                    ((ExecuteScript) inputCommands).getSocket(incoming);
+                    inputCommands.execute(serverCollection,terminalInput);
+
+                }
+                else
+                    writer.write(inputCommands.execute(serverCollection, terminalInput).getBytes());
 
             }
 
