@@ -12,9 +12,9 @@ import java.util.stream.Collectors;
 
 public class Update extends AbstractCommands {
     private HumanBeing human;
-    private String id;
+    private Integer id;
 
-    public Update(String id, HumanBeing human) {
+    public Update(int id, HumanBeing human) {
         this.id = id;
         this.human = human;
     }

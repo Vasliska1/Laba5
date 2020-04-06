@@ -3,12 +3,15 @@ package com.company.server;
 
 import com.company.basis.*;
 import com.company.commands.*;
+import com.company.exception.NoArgument;
 import com.company.input.IOInterface;
 import com.company.input.TerminalInput;
 
 import java.io.*;
+import java.net.ConnectException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
+import java.nio.channels.ClosedChannelException;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
@@ -39,6 +42,9 @@ public class Client {
                             try {
                                 System.out.println(001);
                                 client.finishConnect();
+
+                            } catch (ConnectException e) {
+                                System.out.println("serverok nedostypen");
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
@@ -49,46 +55,64 @@ public class Client {
                     if (key.isWritable()) {
                         System.out.println(11);
                         SendSocketObject(client, selector);
-                        client.register(selector, SelectionKey.OP_READ);
+
                     }
                     if (key.isReadable()) {
                         System.out.println(22);
                         SocketChannel channel = (SocketChannel) key.channel();
-                        getReader(channel);
+                        System.out.println(getReader(channel));
                         client.register(selector, SelectionKey.OP_WRITE);
                     }
                 }
             }
+        } catch (ClosedChannelException e) {
+            System.out.println();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private void SendSocketObject(SocketChannel client, Selector selector) throws IOException, ClassNotFoundException {
+    private void SendSocketObject(SocketChannel client, Selector selector) throws IOException, ClassNotFoundException, NoArgument {
         Scanner sc = new Scanner(System.in);
-
         String[] rightCommand = sc.nextLine().trim().split(" ", 2);
-
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
-        objectOutputStream.writeObject(getObjectCommand(rightCommand));
-        objectOutputStream.flush();
-        client.write(ByteBuffer.wrap(byteArrayOutputStream.toByteArray()));
+        AbstractCommands getObject = getObjectCommand(rightCommand);
+        System.out.println(getObject);
+        if (getObject != null) {
+            objectOutputStream.writeObject(getObject);
+            objectOutputStream.flush();
+            client.write(ByteBuffer.wrap(byteArrayOutputStream.toByteArray()));
+            client.register(selector, SelectionKey.OP_READ);
+        } else client.register(selector, SelectionKey.OP_WRITE);
+      if(getObject instanceof ExecuteScript) {
+          //вот здесь должен читать, он читает пустоту, возвращается к 60 строчке и там читает
+          this.getReader(client);
+          System.out.println(getReader(client));
+         /* System.out.println(1);
+          ByteBuffer data = ByteBuffer.allocate(102400);
+          client.read(data);
+          System.out.println(new String(data.array()).trim());
 
-
+          String[] commandsAtScript = (new String(data.array())).trim().split(" ",2);
+          System.out.println(2);
+          System.out.println(commandsAtScript);
+        }*/
+      }
     }
 
-    public void getReader(SocketChannel client) throws IOException, ClassNotFoundException {
+    public String getReader(SocketChannel client) throws IOException, ClassNotFoundException {
 
         ByteBuffer data = ByteBuffer.allocate(102400);
         client.read(data);
-        System.out.println(new String(data.array()).trim());
+        return new String(data.array()).trim();
 
     }
 
-    public AbstractCommands getObjectCommand(String[] rightCommand) throws IOException {
+    public AbstractCommands getObjectCommand(String[] rightCommand) throws IOException, NoArgument {
 
         AbstractCommands objectCommands = new AbstractCommands();
+        objectCommands = null;
         TerminalInput terminalInput = new TerminalInput();
 
         switch (rightCommand[0]) {
@@ -107,11 +131,29 @@ public class Client {
 
                 break;
             case "update":
-                objectCommands = new Update(rightCommand[1], readElement(terminalInput));
+                try {
+                    if (rightCommand.length < 2)
+                        throw new NoArgument("Вы должны ввести id");
+                    if (rightCommand.length == 2)
+                        objectCommands = new Update(Integer.parseInt(rightCommand[1]), readElement(terminalInput));
+                } catch (NoArgument e) {
+                    e.getMessage();
+                } catch (NumberFormatException e) {
+                    System.out.println("Мэн, введи число");
+                }
+
                 break;
             case "remove_by_id":
-                objectCommands = new RemoveById(Integer.parseInt(rightCommand[1]));
-
+                try {
+                    if (rightCommand.length < 2)
+                        throw new NoArgument("Вы должны ввести айди");
+                    if (rightCommand.length == 2)
+                        objectCommands = new RemoveById(Integer.parseInt(rightCommand[1]));
+                } catch (NoArgument e) {
+                    e.getMessage();
+                } catch (NumberFormatException e) {
+                    System.out.println("Мэн, введи число");
+                }
                 break;
             case "clear":
                 objectCommands = new Clear();
@@ -121,9 +163,14 @@ public class Client {
                 objectCommands = new Save();
                 break;
             case "execute_script":
-
-                objectCommands = new ExecuteScript(rightCommand[1]);
-                this.workWithScript(objectCommands);
+                try {
+                    if (rightCommand.length < 2)
+                        throw new NoArgument("Вы должны ввести имя файла");
+                    if (rightCommand.length == 2)
+                        objectCommands = new ExecuteScript(rightCommand[1]);
+                } catch (NoArgument e) {
+                    e.getMessage();
+                }
                 break;
             case "remove_lower":
                 objectCommands = new RemoveLower(readElement(terminalInput));
@@ -138,7 +185,15 @@ public class Client {
                 objectCommands = new SumOfImpactSpeed();
                 break;
             case "filter_starts_with_name":
-                objectCommands = new FilterStartsWithName(rightCommand[1]);
+                try {
+                    if (rightCommand.length < 2)
+                        throw new NoArgument("Вы должны ввести начало имени");
+                    if (rightCommand.length == 2)
+                        objectCommands = new FilterStartsWithName(rightCommand[1]);
+                } catch (NoArgument e) {
+                    e.getMessage();
+                }
+
                 break;
             case "print_field_descending_weapon_type":
                 objectCommands = new PrintFieldDescendingWeaponType();
@@ -150,8 +205,9 @@ public class Client {
 
     }
 
-    public void workWithScript(AbstractCommands object){
-        
+    public void workWithScript(AbstractCommands object) {
+
+
     }
 
     public HumanBeing readElement(IOInterface command) {

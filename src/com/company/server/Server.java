@@ -39,12 +39,12 @@ public class Server {
                         incoming.getInputStream());
                 System.out.println(12);
                 AbstractCommands inputCommands = (AbstractCommands) reader.readObject();
-                System.out.println(inputCommands);
                 System.out.println(123);
                 if(inputCommands instanceof ExecuteScript){
                     System.out.println(1);
                     ((ExecuteScript) inputCommands).getSocket(incoming);
                     inputCommands.execute(serverCollection,terminalInput);
+                    System.out.println(56);
 
                 }
                 else

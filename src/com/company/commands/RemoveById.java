@@ -17,23 +17,12 @@ public RemoveById(int id){
     public String execute(HumanBeingCollection h,IOInterface c){
         Vector<HumanBeing> newCollection = h.getHumanBeings().stream().filter(s -> s.getId() != id).
                 collect(Collectors.toCollection(Vector::new));
-        newCollection.forEach(s -> System.out.println(s));
-        h.getHumanBeings().clear();
-        h.getHumanBeings().addAll(newCollection);
-
-       /* int k = 0;
-        for (int i = 0; i < h.getHumanBeings().size(); i++) {
-            if (h.getHumanBeings().get(i).getId().toString().equals(id)) {
-                k++;
-            }
+        if (newCollection.size() == h.getHumanBeings().size()) {
+            return "Такого id нет";
         }
-        if (k > 0) {
-            for (int i = 0; i < h.getHumanBeings().size(); i++) {
-                if (h.getHumanBeings().get(i).getId().toString().equals(id)) {
-                    h.getHumanBeings().remove(i);
-                }
-            }*/
-            return "Элемент коллекции удалён.";
+       else{ h.getHumanBeings().clear();
+        h.getHumanBeings().addAll(newCollection);
+        return "Элемент коллекции удалён.";}
 
 
     }

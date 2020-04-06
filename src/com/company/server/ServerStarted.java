@@ -21,7 +21,6 @@ public class ServerStarted {
                 Socket clientSocket = server.accept();
                 System.out.println("Клиент подключился к серверу.");
                 Server s = new Server(clientSocket);
-                System.out.println(clientSocket);
                 s.runProgram();
                 //clientSocket.close();
             }
