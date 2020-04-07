@@ -14,15 +14,13 @@ public class FileInput implements IOInterface {
         try {
 
 
-//String file = "C:\\Users\\Vasilisa\\Laba5\\src\\com\\company\\" + fileName;
-            String file = Paths.get(fileName).toAbsolutePath().toString();
+            String file = "C:\\Users\\Vasilisa\\Laba5\\src\\com\\company\\" + fileName;
+            //String file = Paths.get(fileName).toAbsolutePath().toString();
 
             this.in = new Scanner(new File(file));
+        } catch (FileNotFoundException e) {
+            System.out.println("vi nub");
         }
-
-        catch(FileNotFoundException e){
-        System.out.println("vi nub");
-    }
     }
 
     private Scanner in;

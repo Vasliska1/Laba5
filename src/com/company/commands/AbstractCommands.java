@@ -12,11 +12,11 @@ import java.util.Vector;
 
 public class AbstractCommands implements Serializable {
     //принимать file??
-    public String file;
+    public String file= "C:\\Users\\Vasilisa\\Laba5\\src\\com\\company\\file.xml";
     private HumanBeingCollection collection;
 
 
-    public String execute(HumanBeingCollection h,IOInterface c) throws JAXBException, IOException {
+    public String execute(HumanBeingCollection h,IOInterface c) throws JAXBException, IOException, ClassNotFoundException {
         return null;
     }
 

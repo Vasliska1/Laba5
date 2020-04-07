@@ -10,6 +10,7 @@ import com.company.server.ServerStarted;
 
 import javax.xml.bind.JAXBException;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.Socket;
@@ -22,18 +23,20 @@ public class ExecuteScript extends AbstractCommands {
     private Socket socket;
     private String line;
 
+    public String getFileName() {
+        return fileName;
+    }
+
     public ExecuteScript(String fileName) {
         this.fileName = fileName;
 
     }
-    public void getSocket(Socket socket) {
-        this.socket = socket;
-    }
 
-    @Override
-    public String execute(HumanBeingCollection h, IOInterface c) throws JAXBException, IOException {
 
-        fileName = "C:\\Users\\Vasilisa\\Laba5\\src\\com\\company\\" + fileName;
+   /* @Override
+    public String execute(HumanBeingCollection h, IOInterface c) throws JAXBException, IOException, ClassNotFoundException {
+*/
+        /*fileName = "C:\\Users\\Vasilisa\\Laba5\\src\\com\\company\\" + fileName;
         System.out.println(fileName);
         FileInput input = new FileInput(fileName);
 
@@ -46,17 +49,12 @@ public class ExecuteScript extends AbstractCommands {
         System.out.println(1);
         System.out.println(lines);
         System.out.println(1);
-        OutputStream writer = socket.getOutputStream();
-        writer.write(lines.toString().getBytes());
-           /* while (input.getNextInput() != null) {
-                String CommandsInput = input.getNextInput();
-                if (input.getCurrentInput().equals("execute_script " + fileName))
-                    throw new IncorrectValue("Не зацикливай меня(((");
-                System.out.println(12345);
-                OutputStream writer = socket.getOutputStream();
-                writer.write(input.getNextInput().getBytes());
-            }*/
-        return null;
-    }
+        //OutputStream writer = socket.getOutputStream();
+        return lines.toString().replaceAll("^\\[|\\]$", "");
+         *//* while (reader.readObject() == null){
+              System.out.println(reader.readObject());
+
+          }*/
+
 
 }

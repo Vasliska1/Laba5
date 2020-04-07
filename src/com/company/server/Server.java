@@ -40,16 +40,29 @@ public class Server {
                 System.out.println(12);
                 AbstractCommands inputCommands = (AbstractCommands) reader.readObject();
                 System.out.println(123);
-                if(inputCommands instanceof ExecuteScript){
+               /* if(inputCommands instanceof ExecuteScript){
                     System.out.println(1);
                     ((ExecuteScript) inputCommands).getSocket(incoming);
                     inputCommands.execute(serverCollection,terminalInput);
                     System.out.println(56);
 
-                }
-                else
-                    writer.write(inputCommands.execute(serverCollection, terminalInput).getBytes());
+                }*/
 
+                    writer.write(inputCommands.execute(serverCollection, terminalInput).getBytes());
+                Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
+
+                    public void run() {
+                        Save save = new Save();
+                        try {
+                            save.execute(serverCollection, terminalInput);
+                        } catch (JAXBException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }));
             }
 
         } catch (ClassNotFoundException | IOException e) {
@@ -90,13 +103,15 @@ public class Server {
         }
 
         humanBeingCollection.setDate(new Date());
-        for (HumanBeing humanBeing : humanBeingCollection.getHumanBeings()) {
+      /*  for (HumanBeing humanBeing : humanBeingCollection.getHumanBeings()) {
             System.out.println(humanBeing);
 
-        }
+        }*/
         return humanBeingCollection;
 
     }
+
+
 
 }
 

@@ -6,6 +6,7 @@ import com.company.collection.HumanBeingCollection;
 import com.company.input.IOInterface;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collector;
@@ -43,7 +44,7 @@ public class Show extends AbstractCommands {
                     result.append(h.getHumanBeings().get(i)).append("\n");
                  //   System.out.println(h.getHumanBeings().get(i));
                 }*/
-                return h.getHumanBeings().stream().map(s->s.
+                return h.getHumanBeings().stream().sorted(Comparator.comparing(s->s.getCoordinates().getX())).map(s->s.
                         toString().concat("\n")).collect(Collectors.toList()).toString();
 
         }
