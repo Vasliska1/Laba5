@@ -71,13 +71,25 @@ public class Client {
         }
     }
 
+    /**
+     * читает строки из файли или с терминала
+     * @param input
+     * @return
+     */
     private String[] readInput(IOInterface input) {
 
         return input.getCurrentInput().trim().split(" ", 2);
 
     }
 
-
+    /**
+     * отправляет объекты серверу, проверяет объект на Execute_script, if True -> go to readScript
+     * @param client
+     * @param selector
+     * @param inputCommand
+     * @throws IOException
+     * @throws NoArgument
+     */
     private void sendSocketObject(SocketChannel client, Selector selector, IOInterface inputCommand) throws IOException, NoArgument {
 
         AbstractCommands getObject = getObjectCommand(inputCommand);
@@ -101,6 +113,12 @@ public class Client {
 
     }
 
+    /**
+     * Read server response
+     * @param client
+     * @return
+     * @throws IOException
+     */
     private String getReader(SocketChannel client) throws IOException {
         ByteBuffer data = ByteBuffer.allocate(102400);
         client.read(data);
@@ -109,6 +127,14 @@ public class Client {
 
     }
 
+    /**
+     * Read script
+     * send and read object from Server
+     * @param fileName
+     * @param client
+     * @param selector
+     * @throws FileNotFoundException
+     */
     private void readScript(String fileName, SocketChannel client, Selector selector) throws FileNotFoundException {
         FileInput input = new FileInput(fileName);
         try {
@@ -127,6 +153,13 @@ public class Client {
 
     }
 
+    /**
+     * Преобразует строки в объекты
+     * @param input
+     * @return
+     * @throws IOException
+     * @throws NoArgument
+     */
     private AbstractCommands getObjectCommand(IOInterface input) throws IOException, NoArgument {
         String[] rightCommand = readInput(input);
         AbstractCommands objectCommands = null;
@@ -221,7 +254,11 @@ public class Client {
 
     }
 
-
+    /**
+     * Создает объект
+     * @param command
+     * @return
+     */
     private HumanBeing readElement(IOInterface command) {
         HumanBeing h = null;
         Boolean realHero;
