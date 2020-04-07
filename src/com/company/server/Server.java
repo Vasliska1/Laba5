@@ -17,18 +17,22 @@ import java.net.Socket;
 import java.util.*;
 
 public class Server {
-    private HumanBeingCollection serverCollection = buildCollection();
+
     private Socket incoming;
+    public String file;
+    private HumanBeingCollection serverCollection;
 
-    public static final String file = "C:\\Users\\Vasilisa\\Laba5\\src\\com\\company\\file.xml";
-
-    Server(Socket incoming) throws NoCorrectValue, NullValueException, JAXBException {
+    Server(Socket incoming, String file) throws NoCorrectValue, NullValueException, JAXBException {
         this.incoming = incoming;
+        this.file =file;
+
     }
+
     Server() throws NoCorrectValue, NullValueException, JAXBException {}
 
     public void runProgram() throws IOException, ClassNotFoundException, NoCorrectValue, NullValueException, JAXBException {
         try {
+            serverCollection = buildCollection();
             OutputStream writer = incoming.getOutputStream();
             writer.write(new String("Здарова, православные. Введите help. ").getBytes());
 
@@ -52,8 +56,7 @@ public class Server {
     }
 
 
-    public static HumanBeingCollection buildCollection() throws JAXBException, NullValueException, NoCorrectValue {
-        System.out.println(222);
+    public HumanBeingCollection buildCollection() throws JAXBException, NullValueException, NoCorrectValue {
         File f = new File(file);
         if (!f.canRead() && !f.canWrite() && !f.canExecute())
             throw new SecurityException();
