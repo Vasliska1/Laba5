@@ -17,14 +17,7 @@ public class Reorder extends AbstractCommands {
 
     @Override
     public String execute(HumanBeingCollection h, IOInterface c) throws JAXBException, IOException {
-        /*System.out.println(h.getHumanBeings());
-        Vector<HumanBeing> vector = h.getHumanBeings().stream().
-                sorted(Comparator.reverseOrder()).collect(Collectors.toCollection(Vector::new));
 
-      System.out.println(vector);*/
-      /* Vector<HumanBeing> newCollection = h.getHumanBeings().stream()
-               .sorted((o1,o2) -> -o1.getName().compareTo(o2.getName())).collect(Collectors.toCollection(Vector::new));
-        System.out.println(newCollection);*/
         Collections.reverse(h.getHumanBeings());
         return "Отсортировано!";
     }

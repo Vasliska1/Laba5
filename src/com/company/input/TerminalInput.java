@@ -9,6 +9,7 @@ import java.util.Scanner;
  */
 public class TerminalInput implements IOInterface {
     private String currentInput;
+
     @Override
     public String getNextInput() {
         Scanner sc = new Scanner(System.in);

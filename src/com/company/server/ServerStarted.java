@@ -9,12 +9,14 @@ import javax.xml.bind.JAXBException;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.file.Paths;
+import java.util.NoSuchElementException;
 
-import static com.company.server.Server.buildCollection;
+
 
 public class ServerStarted {
-    public static void main(String[] args) {
-
+    public static void main(String[] args) throws JAXBException, IOException, NullValueException, NoCorrectValue {
+        String file = Paths.get(args[0]).toAbsolutePath().toString();
         try (ServerSocket server = new ServerSocket(8000)) {
             System.out.println("serverok zarabotal");
 
@@ -27,17 +29,15 @@ public class ServerStarted {
                 System.out.println("клиент отключился");
             }
         } catch (IOException ex) {
+            System.err.println("IO problems");
 
-            ex.printStackTrace();
-
-        } catch (NoCorrectValue noCorrectValue) {
+        } catch (NoCorrectValue | NullValueException | ClassNotFoundException noCorrectValue) {
             noCorrectValue.printStackTrace();
         } catch (JAXBException e) {
             System.err.println("Ошибочка, сязанная с json");
-        } catch (NullValueException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+        }catch (NoSuchElementException e){
+            Save save = new Save();
+            save.execute(new Server().getServerCollection(), file);
         }
 
     }

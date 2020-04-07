@@ -13,7 +13,6 @@ public class FileInput implements IOInterface {
     public FileInput(String fileName) throws FileNotFoundException {
         try {
 
-
             String file = "C:\\Users\\Vasilisa\\Laba5\\src\\com\\company\\" + fileName;
             //String file = Paths.get(fileName).toAbsolutePath().toString();
 
@@ -31,6 +30,7 @@ public class FileInput implements IOInterface {
 
         if (in.hasNext()) {
             fileLine = in.nextLine().toLowerCase();
+            System.out.println(1);
             System.out.println(fileLine);
             return fileLine;
         } else

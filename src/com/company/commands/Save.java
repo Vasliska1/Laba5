@@ -13,8 +13,8 @@ import java.io.IOException;
 
 public class Save extends AbstractCommands {
 
-    @Override
-    public String execute(HumanBeingCollection h, IOInterface c) throws JAXBException, IOException {
+
+    public String execute(HumanBeingCollection h, String file) throws JAXBException, IOException {
         FileWriter writer = new FileWriter(file);
         JAXBContext context1 = JAXBContext.newInstance(HumanBeingCollection.class);
         Marshaller marshaller = context1.createMarshaller();

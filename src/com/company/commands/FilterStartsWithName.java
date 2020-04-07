@@ -27,6 +27,6 @@ public class FilterStartsWithName extends AbstractCommands {
         return newHumamCollection.toString();
        else
            return "Такого имени нет";
-    }//filter(s ->s.getName().trim().startsWith(name1))
+    }
 
 }

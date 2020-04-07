@@ -30,6 +30,7 @@ public class Main {
         catch (FileNotFoundException e) {
             System.out.println("vii nub");
         }catch(NoSuchElementException e){
+            System.out.println(1);
             System.exit(0);
         }
 

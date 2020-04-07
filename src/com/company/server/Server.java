@@ -25,9 +25,9 @@ public class Server {
     Server(Socket incoming) throws NoCorrectValue, NullValueException, JAXBException {
         this.incoming = incoming;
     }
+    Server() throws NoCorrectValue, NullValueException, JAXBException {}
 
     public void runProgram() throws IOException, ClassNotFoundException, NoCorrectValue, NullValueException, JAXBException {
-        System.out.println(2);
         try {
             OutputStream writer = incoming.getOutputStream();
             writer.write(new String("Здарова, православные. Введите help. ").getBytes());
@@ -37,37 +37,16 @@ public class Server {
             while (true) {
                 ObjectInputStream reader = new ObjectInputStream(
                         incoming.getInputStream());
-                System.out.println(12);
+
                 AbstractCommands inputCommands = (AbstractCommands) reader.readObject();
-                System.out.println(123);
-               /* if(inputCommands instanceof ExecuteScript){
-                    System.out.println(1);
-                    ((ExecuteScript) inputCommands).getSocket(incoming);
-                    inputCommands.execute(serverCollection,terminalInput);
-                    System.out.println(56);
 
-                }*/
+                System.out.println(inputCommands);
+                writer.write(inputCommands.execute(serverCollection, terminalInput).getBytes());
 
-                    writer.write(inputCommands.execute(serverCollection, terminalInput).getBytes());
-                Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
-
-                    public void run() {
-                        Save save = new Save();
-                        try {
-                            save.execute(serverCollection, terminalInput);
-                        } catch (JAXBException e) {
-                            e.printStackTrace();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-                }));
             }
 
         } catch (ClassNotFoundException | IOException e) {
-           // e.printStackTrace();
-           // System.exit(1);
+            System.out.println("chto-to s clientom");
         }
 
     }
@@ -111,8 +90,9 @@ public class Server {
 
     }
 
-
-
+    public HumanBeingCollection getServerCollection() {
+        return serverCollection;
+    }
 }
 
 

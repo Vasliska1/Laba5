@@ -8,6 +8,7 @@ import com.company.input.IOInterface;
 import javax.xml.bind.JAXBException;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Collections;
 
 public class Add extends AbstractCommands {
 
@@ -20,6 +21,7 @@ public class Add extends AbstractCommands {
     public String execute(HumanBeingCollection h,IOInterface c) throws JAXBException, IOException {
         //ReadElement r = new ReadElement();
         h.getHumanBeings().add(humanBeing);
+        Collections.sort(h.getHumanBeings());
         return "element dobavlen";
     }
 }
